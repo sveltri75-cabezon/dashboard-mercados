@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Mercados</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+html { font-size: 16px; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:     #060910;
+  --panel:  #0b0f18;
+  --panel2: #0f1520;
+  --border: #141c2e;
+  --border2:#1a2440;
+  --accent: #00c896;
+  --blue:   #3d8ef0;
+  --amber:  #f0a03d;
+  --red:    #e05252;
+  --text:   #c8d4e8;
+  --muted:  #3d5070;
+  --mono:   'IBM Plex Mono', monospace;
+  --sans:   'IBM Plex Sans', sans-serif;
+}
+
+html, body { height: 100%; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,200,150,.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,200,150,.015) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none; z-index: 0;
+}
+
+/* ── GRID ── */
+.main {
+  position: relative; z-index: 1;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1.7fr 1.7fr 1.4fr 1.5fr;
+  grid-template-rows: auto 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  padding: 1px;
+  min-height: 0;
+}
+
+.card-tf  { grid-column: span 1; grid-row: span 2; }
+.card-cer { grid-column: span 1; grid-row: span 2; }
+.card-hd  { grid-column: span 1; grid-row: span 2; }
+.card-lici { grid-column: span 1; }
+.card-pf  { grid-column: span 1; }
+.card-db  { grid-column: span 1; }
+
+/* ── CARD ── */
+.card {
+  background: var(--panel);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+  animation: fadeUp .4s ease both;
+}
+@keyframes fadeUp { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:none} }
+
+/* ── RATE CARDS (fila 1) ── */
+.rate-wrap {
+  display: flex; flex-direction: column;
+  padding: .65rem 1.1rem .2rem; gap: .06rem;
+}
+.rate-name {
+  font-family: var(--mono); font-size: .82rem;
+  font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--text); margin-bottom: .12rem; opacity: .85;
+}
+.rate-val-row { display: flex; align-items: baseline; gap: .6rem; }
+.rate-val {
+  font-family: var(--mono); font-size: 2.1rem;
+  font-weight: 700; line-height: 1; letter-spacing: -.025em;
+}
+.rate-val.green { color: var(--accent); }
+.rate-val.blue  { color: var(--blue); }
+.rate-val.amber { color: var(--amber); }
+.rate-chg { font-family: var(--mono); font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: .2rem; }
+.chg-up   { color: var(--accent); }
+.chg-down { color: var(--red); }
+.rate-date { font-family: var(--mono); font-size: .68rem; color: var(--amber); margin-top: .12rem; }
+
+.chart-wrap { padding: .1rem 1rem .4rem; flex-shrink: 0; }
+.chart-svg { width: 100%; height: 44px; display: block; }
+
+.ph-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .5rem; opacity: .3; }
+.ph-icon { font-size: 1.5rem; }
+.ph-text { font-family: var(--mono); font-size: .6rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); text-align: center; line-height: 1.8; }
+
+/* ── BOND TABLES ── */
+.bond-label {
+  padding: .4rem .7rem .12rem;
+  font-family: var(--mono); font-size: .58rem;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--muted); flex-shrink: 0;
+  display: flex; align-items: center; gap: .4rem;
+}
+.live-dot { width:5px; height:5px; border-radius:50%; background:var(--accent); box-shadow:0 0 5px var(--accent); animation:blink 2s infinite; flex-shrink:0; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+.bond-wrap { flex: 1; overflow: hidden; min-height: 0; }
+.bond-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.bond-table th {
+  font-family: var(--mono); font-size: .6rem;
+  letter-spacing: .04em; text-transform: uppercase;
+  color: var(--muted); text-align: right;
+  padding: .3rem .4rem;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: var(--panel2);
+  white-space: nowrap; overflow: hidden;
+}
+.bond-table th:first-child { text-align: left; }
+.bond-table td {
+  font-size: .9rem; padding: .36rem .4rem;
+  border-bottom: 1px solid rgba(20,28,46,.8);
+  vertical-align: middle; text-align: right;
+  white-space: nowrap; overflow: hidden;
+}
+.bond-table tr:last-child td { border-bottom: none; }
+.bond-table tr:hover td { background: rgba(255,255,255,.025); }
+.td-tk { font-family: var(--mono); font-weight: 700; text-align: left !important; }
+.td-nr { font-family: var(--mono); }
+.td-up { color: var(--accent); }
+.td-dn { color: var(--red); }
+.td-var { font-family: var(--mono); font-size: .75rem; }
+.td-mt { color: var(--muted); font-size: .75rem; }
+
+/* ── PLAZO FIJO ── */
+.section-label {
+  padding: .4rem .7rem .1rem;
+  font-family: var(--mono); font-size: .55rem;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted); flex-shrink: 0;
+}
+.pf-wrap { flex: 1; overflow: hidden; min-height: 0; }
+.pf-table { width: 100%; border-collapse: collapse; }
+.pf-table th { font-family: var(--mono); font-size: .58rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); text-align: left; padding: .32rem .6rem; border-bottom: 1px solid var(--border); background: var(--panel2); }
+.pf-table th:last-child { text-align: right; }
+.pf-table td { font-size: .82rem; padding: .36rem .6rem; border-bottom: 1px solid rgba(20,28,46,.8); }
+.pf-table tr:last-child td { border-bottom: none; }
+.pf-table tr:nth-child(n+6) { display: none; }
+.row-mer td { background: rgba(0,200,150,.04) !important; }
+.row-mer .pf-bank { color: var(--accent); font-weight: 600; }
+.pf-pos { font-family: var(--mono); font-size: .78rem; color: var(--muted); width: 26px; text-align: center; }
+.pf-pos.p1 { color: var(--accent); }
+.pf-tna { font-family: var(--mono); font-size: .92rem; text-align: right; font-weight: 600; }
+.pf-tna.best { color: var(--accent); }
+.pf-bar { width: 65px; padding-left: .5rem; }
+.mini-bar { height: 3px; border-radius: 999px; background: var(--border2); overflow: hidden; }
+.mini-bar-fill { height: 100%; border-radius: 999px; }
+.bar-a { background: var(--accent); }
+.bar-m { background: var(--muted); opacity: .45; }
+.rank-tag { display:inline-flex; align-items:center; gap:.2rem; font-family:var(--mono); font-size:.62rem; padding:.12rem .45rem; border-radius:3px; background:rgba(240,160,61,.1); color:var(--amber); border:1px solid rgba(240,160,61,.2); }
+
+/* ── DOLAR BANCOS ── */
+.db-wrap { flex: 1; overflow: auto; min-height: 0; }
+.db-table { width: 100%; border-collapse: collapse; }
+.db-table th { font-family: var(--mono); font-size: .58rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); text-align: left; padding: .32rem .6rem; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--panel2); }
+.db-table th:last-child { text-align: right; }
+.db-table td { font-size: .85rem; padding: .38rem .6rem; border-bottom: 1px solid rgba(20,28,46,.8); vertical-align: middle; }
+.db-table tr:last-child td { border-bottom: none; }
+.db-table tr:hover td { background: rgba(255,255,255,.02); }
+.row-db-best td { background: rgba(0,200,150,.04) !important; }
+.row-db-mer  td { background: rgba(61,142,240,.04) !important; }
+.db-pos { font-family: var(--mono); font-size: .78rem; color: var(--muted); width: 26px; text-align: center; }
+.db-pos.p1 { color: var(--accent); }
+.db-bank { font-size: .92rem; font-weight: 500; }
+.db-bank.mer { color: var(--blue); }
+.db-venta { font-family: var(--mono); font-size: .92rem; text-align: right; font-weight: 600; }
+.db-venta.best { color: var(--accent); }
+
+/* ── TICKER + RELOJ ── */
+.ticker-band {
+  position: relative; z-index: 10; flex-shrink: 0;
+  background: rgba(6,9,16,.97);
+  border-top: 1px solid var(--border);
+}
+.ticker-band::before, .ticker-band::after {
+  content: ''; position: absolute; top: 0; bottom: 0;
+  width: 50px; z-index: 2; pointer-events: none;
+}
+.ticker-band::before { left:0; background: linear-gradient(90deg, rgba(6,9,16,.97), transparent); }
+.ticker-band::after  { right:0; background: linear-gradient(270deg, rgba(6,9,16,.97), transparent); }
+.ticker-top { height: 1px; background: linear-gradient(90deg, transparent, var(--accent), var(--blue), transparent); }
+.ticker-inner { display: flex; align-items: center; }
+.ticker-left {
+  display: flex; align-items: center; gap: .9rem;
+  padding: .6rem 1rem; border-right: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.ticker-tag { font-family: var(--mono); font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: .3rem; }
+.clock { font-family: var(--mono); font-size: 1.1rem; font-weight: 600; color: var(--text); letter-spacing: .08em; }
+.ticker-track { overflow: hidden; flex: 1; }
+.ticker-scroll { display: flex; white-space: nowrap; animation: scroll-left 120s linear infinite; width: max-content; }
+.ticker-scroll:hover { animation-play-state: paused; }
+@keyframes scroll-left { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+.ticker-item { display: inline-flex; align-items: center; gap: .5rem; padding: .6rem 1.2rem; border-right: 1px solid var(--border); }
+.t-sym { font-family: var(--mono); font-size: 1.1rem; font-weight: 600; color: var(--text); }
+.t-px  { font-family: var(--mono); font-size: 1.1rem; font-weight: 500; }
+.t-pct { font-family: var(--mono); font-size: .9rem; }
+.t-up   { color: var(--accent); }
+.t-dn   { color: var(--red); }
+.t-flat { color: var(--muted); }
+
+/* ── LICI MECON ── */
+.lici-dates {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--border); flex: 1;
+}
+.lici-cell { background: var(--panel); padding: .7rem .9rem; display: flex; align-items: center; justify-content: center; }
+.lici-val  { font-family:var(--mono); font-size:1.4rem; font-weight:700; color:var(--amber); line-height:1; text-align:center; }
+.lici-cell.liq .lici-val { color:var(--muted); font-size:1.2rem; }
+
+.lici-cd {
+  display:flex; align-items:center; gap:.5rem;
+  padding:.32rem .9rem; border-top:1px solid var(--border);
+  flex-shrink:0;
+}
+.lici-cd-lbl { font-family:var(--mono); font-size:.52rem; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
+.lici-cd-track { flex:1; height:3px; background:var(--border2); border-radius:999px; overflow:hidden; }
+.lici-cd-fill  { height:100%; border-radius:999px; background:var(--amber); transition:width 1s linear; }
+.lici-cd-val   { font-family:var(--mono); font-size:.72rem; font-weight:600; color:var(--amber); white-space:nowrap; min-width:50px; text-align:right; }
+
+.lici-banner-wrap { position:relative; overflow:hidden; flex:1; min-height:0; border-top:1px solid var(--border); }
+.lici-banner-lbl {
+  position:absolute; left:0; top:0; bottom:0; display:flex; align-items:center;
+  padding:0 .6rem; font-family:var(--mono); font-size:.48rem;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
+  border-right:1px solid var(--border); background:var(--panel2); z-index:2; white-space:nowrap;
+}
+.lici-track { overflow:hidden; position:absolute; left:62px; right:0; top:0; bottom:0; display:flex; align-items:center; }
+.lici-scroll { display:flex; gap:0; white-space:nowrap; animation:lici-scroll 20s linear infinite; width:max-content; }
+.lici-scroll:hover { animation-play-state:paused; }
+@keyframes lici-scroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+.lici-chip { display:inline-flex; align-items:center; gap:.3rem; padding:0 .75rem; border-right:1px solid var(--border); height:100%; }
+.lici-type { font-family:var(--mono); font-size:.52rem; padding:.08rem .35rem; border-radius:3px; }
+.lt-fija  { background:rgba(0,200,150,.1);  color:var(--accent); border:1px solid rgba(0,200,150,.2); }
+.lt-cer   { background:rgba(61,142,240,.1); color:var(--blue);   border:1px solid rgba(61,142,240,.2); }
+.lt-tamar { background:rgba(240,160,61,.1); color:var(--amber);  border:1px solid rgba(240,160,61,.2); }
+.lt-link  { background:rgba(224,82,82,.1);  color:var(--red);    border:1px solid rgba(224,82,82,.2); }
+.lt-usd   { background:rgba(74,222,128,.1); color:#4ade80;       border:1px solid rgba(74,222,128,.2); }
+.lici-chip-info { display:flex; flex-direction:column; gap:.05rem; }
+.lici-chip-name { font-size:.65rem; color:var(--text); font-weight:500; }
+.lici-chip-vto  { font-family:var(--mono); font-size:.52rem; color:var(--muted); }
+
+.lici-header {
+  display:flex; align-items:center;
+  padding:.45rem .9rem; border-bottom:1px solid var(--border);
+  background:var(--panel2); flex-shrink:0;
+}
+.lici-title { font-family:var(--mono); font-size:.75rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text); }
+
+/* ── SCALING ── */
+/* Base para desktop/DeX */
+html { font-size: 16px; }
+
+/* DeX / TV 1080p */
+@media screen and (min-width: 1600px) {
+  html { font-size: 18px; }
+  .rate-val   { font-size: 2.3rem !important; }
+  .chart-svg  { height: 52px !important; }
+}
+
+/* DeX / TV 4K */
+@media screen and (min-width: 2400px) {
+  html { font-size: 24px; }
+  .rate-val   { font-size: 3rem !important; }
+  .chart-svg  { height: 70px !important; }
+  .bond-table td { font-size: 1.2rem !important; }
+  .pf-table td   { font-size: 1.1rem !important; }
+  .db-table td   { font-size: 1.1rem !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="main">
+
+  <!-- ── FILA 1 ── -->
+
+  <!-- MEP -->
+  <div class="card" style="animation-delay:.04s">
+    <div class="rate-wrap">
+      <div class="rate-name">💱 Dólar MEP</div>
+      <div class="rate-val-row">
+        <div class="rate-val green" id="mep-val">—</div>
+        <div class="rate-chg" id="mep-chg"></div>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <svg class="chart-svg" id="chart-mep" viewBox="0 0 300 44" preserveAspectRatio="none"></svg>
+    </div>
+  </div>
+
+  <!-- CCL -->
+  <div class="card" style="animation-delay:.07s">
+    <div class="rate-wrap">
+      <div class="rate-name">💵 Dólar CCL</div>
+      <div class="rate-val-row">
+        <div class="rate-val blue" id="ccl-val">—</div>
+        <div class="rate-chg" id="ccl-chg"></div>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <svg class="chart-svg" id="chart-ccl" viewBox="0 0 300 44" preserveAspectRatio="none"></svg>
+    </div>
+  </div>
+
+  <!-- TAMAR -->
+  <div class="card" style="animation-delay:.10s">
+    <div class="rate-wrap">
+      <div class="rate-name">📊 Tasa TAMAR</div>
+      <div class="rate-val-row">
+        <div class="rate-val amber" id="tamar-val">—</div>
+        <div class="rate-chg" id="tamar-chg"></div>
+      </div>
+      <div class="rate-date" id="tamar-date">—</div>
+    </div>
+    <div class="chart-wrap">
+      <svg class="chart-svg" id="chart-tamar" viewBox="0 0 300 44" preserveAspectRatio="none"></svg>
+    </div>
+  </div>
+
+  <!-- LICI MECON — col 4 fila 1 -->
+  <div class="card card-lici" style="animation-delay:.13s">
+    <div class="lici-header">
+      <div class="lici-title">📋 Lici MECON</div>
+    </div>
+    <div class="lici-dates">
+      <div class="lici-cell">
+        <div class="lici-val" id="lici-recepcion">—</div>
+      </div>
+      <div class="lici-cell liq">
+        <div class="lici-val" id="lici-liquidacion">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FILA 2+3: BONOS (span 2 rows) + PF/DB (cols 4-5) ── -->
+
+  <!-- TASA FIJA — 1col × 2 rows -->
+  <div class="card card-tf" style="animation-delay:.19s">
+    <div class="bond-label"><span class="live-dot"></span>📈 Tasa Fija</div>
+    <div class="bond-wrap">
+      <table class="bond-table" id="tbl-tasafija"></table>
+    </div>
+  </div>
+
+  <!-- CER — 1col × 2 rows -->
+  <div class="card card-cer" style="animation-delay:.22s">
+    <div class="bond-label"><span class="live-dot"></span>📊 CER</div>
+    <div class="bond-wrap">
+      <table class="bond-table" id="tbl-cer"></table>
+    </div>
+  </div>
+
+  <!-- HARD DÓLAR — 1col × 2 rows -->
+  <div class="card card-hd" style="animation-delay:.25s">
+    <div class="bond-label"><span class="live-dot"></span>💵 Hard Dólar</div>
+    <div class="bond-wrap">
+      <table class="bond-table" id="tbl-hardusd"></table>
+    </div>
+  </div>
+
+  <!-- PLAZO FIJO — col 4 fila 2 -->
+  <div class="card card-pf" style="animation-delay:.28s">
+    <div class="section-label">💰 Plazo Fijo Web · no clientes · TNA 30 días</div>
+    <div class="pf-wrap">
+      <table class="pf-table" id="tbl-pf"></table>
+    </div>
+  </div>
+
+  <!-- DOLAR BANCOS — col 4 fila 3 -->
+  <div class="card card-db" style="animation-delay:.31s">
+    <div class="section-label">🏦 Dólar Bancos · precio vendedor</div>
+    <div class="db-wrap">
+      <table class="db-table" id="tbl-db"></table>
+    </div>
+  </div>
+
+</div>
+
+<!-- TICKER + RELOJ -->
+<div class="ticker-band">
+  <div class="ticker-top"></div>
+  <div class="ticker-inner">
+    <div class="ticker-left">
+      <div class="ticker-tag">
+        <span class="live-dot"></span>
+        MERVAL
+      </div>
+      <div class="clock" id="clock">—</div>
+    </div>
+    <div class="ticker-track">
+      <div class="ticker-scroll" id="ticker-scroll"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+function fmt2(v) { return v.toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmtP(v) { return fmt2(v)+'%'; }
+function rnd(v,s=.003){ return +(v*(1+(Math.random()-.5)*s)).toFixed(2); }
+function genHist(base,n=30,vol=.007){ const a=[base]; for(let i=1;i<n;i++) a.push(+(a[i-1]*(1+(Math.random()-.5)*vol)).toFixed(2)); return a; }
+
+// ── CSV URLs ──
+const CSV_BONDS  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTDDCPaFWrl0LmClbajiHvYkeqbpczciXXnQV8VhWJ2QfMEhHo0tQGHpQFdN1UtFmGO--i2__OnSF8I/pub?gid=0&single=true&output=csv';
+const CSV_FLUJOS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSUp-XJ7rx8hw0j_Rqy7RHrqCBwqwUxgH_BZQ6RmSY2sfXNHd7Yvb2vlLCYabemODWaCLdBoQ2kxCTW/pub?gid=0&single=true&output=csv';
+const API_STOCKS    = '/api/stocks';
+const API_BONDS     = '/api/bonds';
+const API_TAMAR     = '/api/tamar';
+const API_PF        = '/api/bcra-pf';
+const API_DB        = '/api/dolar-bancos';
+const API_LICI      = '/api/lici';
+const API_HISTORICO = '/api/historico';
+
+// ── CSV PARSER ──
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.trim().replace(/\r/g,''));
+  return lines.slice(1).map(line => {
+    const vals = line.split(',').map(v => v.trim().replace(/\r/g,''));
+    const obj = {};
+    headers.forEach((h, i) => obj[h] = vals[i] || '');
+    return obj;
+  });
+}
+
+// ── CALC TNA/TIR (Fija y CER) ──
+function calcFijaCer(row, precio) {
+  const vpv   = parseFloat(row.VPV)   || 0;
+  const plazo = parseFloat(row.Plazo) || 1;
+  if (!precio || !vpv) return { tna: null, tir: null };
+  const tna = ((vpv - precio) / precio / plazo * 365) * 100;
+  const tir = (Math.pow(vpv / precio, 365 / plazo) - 1) * 100;
+  return { tna: +tna.toFixed(2), tir: +tir.toFixed(2) };
+}
+
+// ── CALC TIR/MD (Hard Dólar) por flujos ──
+function calcHardUsd(ticker, precio, flujos) {
+  const today = new Date();
+  const flows = flujos
+    .filter(f => f.Ticker === ticker && new Date(f.Fecha) > today)
+    .map(f => ({ t: (new Date(f.Fecha) - today) / (365.25 * 86400000), cf: parseFloat(f.Flujo) || 0 }))
+    .filter(f => f.cf > 0);
+
+  if (!flows.length || !precio) return { tir: null, md: null };
+
+  // Newton-Raphson TIR
+  let r = 0.10;
+  for (let i = 0; i < 50; i++) {
+    let pv = 0, dpv = 0;
+    flows.forEach(({ t, cf }) => {
+      const disc = cf / Math.pow(1 + r, t);
+      pv  += disc;
+      dpv -= t * disc / (1 + r);
+    });
+    const f  = pv - precio;
+    const df = dpv;
+    if (Math.abs(df) < 1e-12) break;
+    const nr = r - f / df;
+    if (Math.abs(nr - r) < 1e-8) { r = nr; break; }
+    r = nr;
+  }
+
+  // Duration Modificada
+  let sumPV = 0, sumWt = 0;
+  flows.forEach(({ t, cf }) => {
+    const pv = cf / Math.pow(1 + r, t);
+    sumPV += pv;
+    sumWt += t * pv;
+  });
+  const duration = sumWt / sumPV;
+  const md = duration / (1 + r);
+
+  return { tir: +(r * 100).toFixed(2), md: +md.toFixed(2) };
+}
+
+// ── FORMAT PLAZO ──
+function fmtPlazo(fechaStr) {
+  if (!fechaStr) return '—';
+  const d = new Date(fechaStr);
+  if (isNaN(d)) return fechaStr;
+  const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return `${meses[d.getMonth()]} ${String(d.getFullYear()).slice(2)}`;
+}
+
+// ── STATE ──
+let bonds = { tasafija:[], cer:[], hardusd:[] };
+let csvBonds = [], csvFlujos = [];
+let livePrices = {};
+
+// ── FETCH CSV ──
+async function fetchCSVs() {
+  try {
+    const [r1, r2] = await Promise.all([
+      fetch(CSV_BONDS),
+      fetch(CSV_FLUJOS)
+    ]);
+    csvBonds  = parseCSV(await r1.text());
+    csvFlujos = parseCSV(await r2.text());
+  } catch(e) { console.warn('CSV fetch error', e); }
+}
+
+// ── FETCH LIVE PRICES ──
+async function fetchLivePrices() {
+  try {
+    const r = await fetch(API_BONDS);
+    const data = await r.json();
+    data.forEach(d => { livePrices[d.symbol] = d.c; });
+  } catch(e) { console.warn('Live price error', e); }
+}
+
+// ── BUILD BOND TABLES FROM CSV + PRICES ──
+function buildBondData() {
+  const today = new Date();
+  bonds.tasafija = []; bonds.cer = []; bonds.hardusd = [];
+
+  csvBonds.forEach(row => {
+    const ticker = row.Ticker;
+    const tipo   = (row.Tipo || '').trim();
+    const precio = livePrices[ticker] || parseFloat(row.VPV) || 0;
+    const plazo  = fmtPlazo(row.FechaVto);
+
+    if (tipo === 'Tasa Fija') {
+      const { tna, tir } = calcFijaCer(row, precio);
+      bonds.tasafija.push({ t: ticker, p: precio, _base: precio, tna, tir, plazo });
+    } else if (tipo === 'CER') {
+      const { tna, tir } = calcFijaCer(row, precio);
+      bonds.cer.push({ t: ticker, p: precio, _base: precio, tna, tir, plazo });
+    } else if (tipo === 'Hard Dólar') {
+      const { tir, md } = calcHardUsd(ticker, precio, csvFlujos);
+      bonds.hardusd.push({ t: ticker, p: precio, _base: precio, tir, md, plazo });
+    }
+  });
+}
+
+let mepCur=1284.6, cclCur=1301.2, tamarCur=31.06;
+let mepHist=genHist(mepCur-80), cclHist=genHist(cclCur-90), tamarHist=genHist(tamarCur-1,30,.003);
+
+const PF_BANKS=[];
+const DB_BANKS=[];
+
+// ── FETCH DOLAR BANCOS ──
+async function fetchDB() {
+  try {
+    const r = await fetch(API_DB);
+    const data = await r.json();
+    if (data.ok && data.data?.length) {
+      DB_BANKS.length = 0;
+      data.data.forEach(b => DB_BANKS.push({ name: b.nombre, venta: b.venta, mer: b.mer }));
+    }
+  } catch(e) { console.warn('DB fetch error', e); }
+}
+
+// ── FETCH LICI MECON ──
+async function fetchLici() {
+  try {
+    const r = await fetch(API_LICI);
+    const data = await r.json();
+    const lici = data.data;
+    const recEl  = document.getElementById('lici-recepcion');
+    const liqEl  = document.getElementById('lici-liquidacion');
+    const hdrEl  = document.querySelector('.lici-dates');
+
+    if (!lici) {
+      // Sin licitación publicada → tarjeta vacía
+      if (recEl)  recEl.textContent  = '—';
+      if (liqEl)  liqEl.textContent  = '—';
+      return;
+    }
+    if (recEl)  recEl.textContent  = lici.recepcion  || '—';
+    if (liqEl)  liqEl.textContent  = lici.liquidacion || '—';
+  } catch(e) { console.warn('Lici fetch error', e); }
+}
+
+// ── FETCH HISTORICO MEP/CCL ──
+async function fetchHistorico() {
+  try {
+    const [rAL30, rAL30D, rAL30C] = await Promise.all([
+      fetch(`${API_HISTORICO}?ticker=AL30`),
+      fetch(`${API_HISTORICO}?ticker=AL30D`),
+      fetch(`${API_HISTORICO}?ticker=AL30C`),
+    ]);
+    const dAL30  = (await rAL30.json()).data  || [];
+    const dAL30D = (await rAL30D.json()).data || [];
+    const dAL30C = (await rAL30C.json()).data || [];
+
+    // Construir histórico MEP = AL30/AL30D por fecha
+    if (dAL30.length && dAL30D.length) {
+      const mapD = Object.fromEntries(dAL30D.map(d => [d.fecha, d.cierre]));
+      const mep  = dAL30.map(d => mapD[d.fecha] ? +(d.cierre / mapD[d.fecha]).toFixed(2) : null).filter(Boolean);
+      if (mep.length) { mepHist = mep; mepCur = mep[mep.length-1]; }
+    }
+
+    // Construir histórico CCL = AL30/AL30C por fecha
+    if (dAL30.length && dAL30C.length) {
+      const mapC = Object.fromEntries(dAL30C.map(d => [d.fecha, d.cierre]));
+      const ccl  = dAL30.map(d => mapC[d.fecha] ? +(d.cierre / mapC[d.fecha]).toFixed(2) : null).filter(Boolean);
+      if (ccl.length) { cclHist = ccl; cclCur = ccl[ccl.length-1]; }
+    }
+  } catch(e) { console.warn('Historico fetch error', e); }
+}
+
+const STOCKS=[
+  {s:'GGAL',c:6305,p:-1.48},{s:'YPFD',c:61575,p:0.98},{s:'PAMP',c:4965,p:-2.35},
+  {s:'BMA',c:9925,p:-2.40},{s:'TGSU2',c:9545,p:-2.60},{s:'BBAR',c:6590,p:-2.51},
+  {s:'CEPU',c:2240,p:-3.90},{s:'TRAN',c:3715,p:0.33},{s:'EDN',c:2060,p:-2.78},
+  {s:'LOMA',c:2955,p:-0.75},{s:'SUPV',c:2398,p:-4.36},{s:'TXAR',c:623,p:-1.88},
+  {s:'VALO',c:596.5,p:-0.41},{s:'BYMA',c:313,p:0.16},{s:'TGNO4',c:4230,p:-3.53},
+  {s:'MIRG',c:18600,p:0.13},{s:'IRSA',c:2005,p:-4.97},{s:'CVH',c:6940,p:0.72},
+  {s:'METR',c:1983,p:-1.58},{s:'ALUA',c:794.5,p:-1.30},{s:'CELU',c:305,p:10.50},
+  {s:'ROSE',c:157,p:-5.98},{s:'MORI',c:28.5,p:-0.69},{s:'TECO2',c:3300,p:-2.14},
+];
+let stocks=STOCKS.map(s=>({...s,cur:s.c}));
+
+function drawChart(id,data,color){
+  const svg=$(id); if(!svg) return; svg.innerHTML='';
+  const W=300,H=44,p={t:2,b:2,l:1,r:1};
+  const mn=Math.min(...data)*.999, mx=Math.max(...data)*1.001;
+  const x=i=>p.l+(i/(data.length-1))*(W-p.l-p.r);
+  const y=v=>p.t+(1-(v-mn)/(mx-mn))*(H-p.t-p.b);
+  const defs=document.createElementNS('http://www.w3.org/2000/svg','defs');
+  const g=document.createElementNS('http://www.w3.org/2000/svg','linearGradient');
+  g.setAttribute('id',`g${id}`);g.setAttribute('x1','0');g.setAttribute('y1','0');g.setAttribute('x2','0');g.setAttribute('y2','1');
+  [[0,.2],[1,0]].forEach(([o,op])=>{const s=document.createElementNS('http://www.w3.org/2000/svg','stop');s.setAttribute('offset',`${o*100}%`);s.setAttribute('stop-color',color);s.setAttribute('stop-opacity',op);g.appendChild(s);});
+  defs.appendChild(g);svg.appendChild(defs);
+  let aD=`M${x(0)},${H-p.b} L${x(0)},${y(data[0])}`;
+  data.forEach((v,i)=>{aD+=` L${x(i)},${y(v)}`;});
+  aD+=` L${x(data.length-1)},${H-p.b} Z`;
+  const area=document.createElementNS('http://www.w3.org/2000/svg','path');
+  area.setAttribute('d',aD);area.setAttribute('fill',`url(#g${id})`);svg.appendChild(area);
+  let lD=`M${x(0)},${y(data[0])}`;
+  data.forEach((v,i)=>{if(i>0)lD+=` L${x(i)},${y(v)}`;});
+  const line=document.createElementNS('http://www.w3.org/2000/svg','path');
+  line.setAttribute('d',lD);line.setAttribute('fill','none');line.setAttribute('stroke',color);line.setAttribute('stroke-width','1.5');line.setAttribute('stroke-linejoin','round');svg.appendChild(line);
+  const dot=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  dot.setAttribute('cx',x(data.length-1));dot.setAttribute('cy',y(data[data.length-1]));dot.setAttribute('r','2.5');dot.setAttribute('fill',color);svg.appendChild(dot);
+}
+
+function renderRate(valId,chgId,cur,prev,isRate=false){
+  const el=$(valId); if(!el) return;
+  el.textContent=isRate?fmtP(cur):`$${fmt2(cur)}`;
+  const chg=$(chgId); if(!chg) return;
+  const pct=(((cur-prev)/prev)*100).toFixed(2);
+  const up=cur>prev;
+  const arrow=cur>prev?'▲':cur<prev?'▼':'—';
+  chg.innerHTML=`<span class="${up?'chg-up':'chg-down'}">${arrow} ${Math.abs(pct)}%</span>`;
+}
+
+function updateRates(){
+  const pm=mepCur,pc=cclCur,pt=tamarCur;
+  mepCur=rnd(mepCur,.002); cclCur=rnd(cclCur,.002); tamarCur=rnd(tamarCur,.0005);
+  renderRate('mep-val','mep-chg',mepCur,pm);
+  renderRate('ccl-val','ccl-chg',cclCur,pc);
+  renderRate('tamar-val','tamar-chg',tamarCur,pt,true);
+  const d=$('tamar-date'); if(d) d.textContent=tamarDate;
+}
+
+function renderFijaCer(id,data){
+  const el=$(id); if(!el) return;
+  el.innerHTML=`<thead><tr>
+    <th>Ticker</th><th>Precio</th><th>Var%</th><th>TNA%</th><th>TIR%</th><th>Plazo</th>
+  </tr></thead>
+  <tbody>${data.map(b=>{
+    const up=b.p>b._base, dn=b.p<b._base;
+    const pct=b._base?((b.p-b._base)/b._base*100).toFixed(1):'0.0';
+    const varClass=up?'td-up':dn?'td-dn':'';
+    const arrow=up?'▲':dn?'▼':'';
+    const precio = (+b.p).toFixed(1);
+    const tna = b.tna!==null ? (+b.tna).toFixed(1) : '—';
+    const tir = b.tir!==null ? (+b.tir).toFixed(1) : '—';
+    return `<tr>
+      <td class="td-tk">${b.t}</td>
+      <td class="td-nr ${up?'td-up':dn?'td-dn':''}">${precio}</td>
+      <td class="td-var ${varClass}">${arrow}${Math.abs(pct)}</td>
+      <td class="td-nr">${tna}</td>
+      <td class="td-nr">${tir}</td>
+      <td class="td-nr td-mt">${b.plazo}</td>
+    </tr>`;
+  }).join('')}</tbody>`;
+}
+
+function renderHardUsd(id,data){
+  const el=$(id); if(!el) return;
+  el.innerHTML=`<thead><tr>
+    <th>Ticker</th><th>Precio</th><th>Var%</th><th>TIR%</th><th>MD</th>
+  </tr></thead>
+  <tbody>${data.map(b=>{
+    const up=b.p>b._base, dn=b.p<b._base;
+    const pct=b._base?((b.p-b._base)/b._base*100).toFixed(1):'0.0';
+    const varClass=up?'td-up':dn?'td-dn':'';
+    const arrow=up?'▲':dn?'▼':'';
+    const precio = (+b.p).toFixed(1);
+    const tir = b.tir!==null ? (+b.tir).toFixed(1) : '—';
+    const md  = b.md!==null  ? (+b.md).toFixed(1)  : '—';
+    return `<tr>
+      <td class="td-tk">${b.t}</td>
+      <td class="td-nr ${up?'td-up':dn?'td-dn':''}">${precio}</td>
+      <td class="td-var ${varClass}">${arrow}${Math.abs(pct)}</td>
+      <td class="td-nr">${tir}</td>
+      <td class="td-nr td-mt">${md}</td>
+    </tr>`;
+  }).join('')}</tbody>`;
+}
+
+function updateBonds(){
+  // update prices from live API with small random walk fallback
+  bonds.tasafija = bonds.tasafija.map(b=>({...b, p: livePrices[b.t] || rnd(b.p,.002)}));
+  bonds.cer      = bonds.cer.map(b=>({...b, p: livePrices[b.t] || rnd(b.p,.002)}));
+  bonds.hardusd  = bonds.hardusd.map(b=>({...b, p: livePrices[b.t] || rnd(b.p,.002)}));
+  renderFijaCer('tbl-tasafija',bonds.tasafija);
+  renderFijaCer('tbl-cer',bonds.cer);
+  renderHardUsd('tbl-hardusd',bonds.hardusd);
+}
+
+function renderPF(){
+  const sorted=[...PF_BANKS].sort((a,b)=>b.tna-a.tna);
+  const mer=sorted.find(x=>x.mer);
+  const pos=mer ? sorted.filter(x=>x.tna>mer.tna).length+1 : null;
+  $('tbl-pf').innerHTML=`<thead><tr><th>#</th><th>Banco</th><th>TNA</th><th>Ranking</th></tr></thead>
+  <tbody>${sorted.map((b,i)=>`<tr class="${b.mer?'row-mer':''}">
+    <td class="pf-pos ${i===0?'p1':''}">${i+1}</td>
+    <td class="${b.mer?'pf-bank':''}">${b.name}</td>
+    <td class="pf-tna ${i===0?'best':''}">${fmtP(b.tna)}</td>
+    <td style="font-family:var(--mono);font-size:.75rem;text-align:right;color:var(--muted)">${b.mer&&pos?`<span class="rank-tag">▲ ${pos}° / ${sorted.length}</span>`:''}</td>
+  </tr>`).join('')}</tbody>`;
+}
+
+function renderDB(){
+  const sorted=[...DB_BANKS].sort((a,b)=>a.venta-b.venta);
+  $('tbl-db').innerHTML=`<thead><tr><th>#</th><th>Banco</th><th>Venta</th></tr></thead>
+  <tbody>${sorted.map((b,i)=>`<tr class="${i===0?'row-db-best':b.mer?'row-db-mer':''}">
+    <td class="db-pos ${i===0?'p1':''}">${i+1}</td>
+    <td class="db-bank ${b.mer?'mer':''}">${b.name}</td>
+    <td class="db-venta ${i===0?'best':''}">$${fmt2(b.venta)}</td>
+  </tr>`).join('')}</tbody>`;
+}
+
+function renderTicker(){
+  $('ticker-scroll').innerHTML=[...stocks,...stocks].map(s=>{
+    const up=s.p>0,dn=s.p<0;
+    const arrow=up?'▲':dn?'▼':'—';
+    const cls=up?'t-up':dn?'t-dn':'t-flat';
+    return `<span class="ticker-item">
+      <span class="t-sym">${s.s}</span>
+      <span class="t-px ${cls}">${fmt2(s.cur)}</span>
+      <span class="t-pct ${cls}">${arrow}${Math.abs(s.p).toFixed(2)}%</span>
+    </span>`;
+  }).join('');
+}
+
+function updateClock(){
+  const now=new Date();
+  $('clock').textContent=`${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+}
+
+// ── LICI MECON ──
+const LICI_OPEN  = new Date('2026-03-27T10:00:00-03:00');
+const LICI_CLOSE = new Date('2026-03-27T15:00:00-03:00');
+const LICI_INST  = [
+  {type:'lt-fija', label:'Tasa Fija', name:'LECAP',    vto:'Jul 26'},
+  {type:'lt-cer',  label:'CER',       name:'BONCER',   vto:'Sep 27'},
+  {type:'lt-cer',  label:'CER',       name:'BONCER',   vto:'Sep 28'},
+  {type:'lt-tamar',label:'TAMAR',     name:'TMF27',    vto:'Feb 27'},
+  {type:'lt-link', label:'DL',        name:'BONO DL',  vto:'Jun 28'},
+  {type:'lt-usd',  label:'USD',       name:'AO27',     vto:'Oct 27'},
+  {type:'lt-usd',  label:'USD',       name:'BONAR',    vto:'Oct 28'},
+];
+
+function initLici() {
+  const el = document.getElementById('lici-scroll');
+  if (!el) return;
+  el.innerHTML = [...LICI_INST,...LICI_INST].map(i=>`
+    <div class="lici-chip">
+      <span class="lici-type ${i.type}">${i.label}</span>
+      <div class="lici-chip-info">
+        <span class="lici-chip-name">${i.name}</span>
+        <span class="lici-chip-vto">${i.vto}</span>
+      </div>
+    </div>`).join('');
+}
+
+function updateLici() {
+  const now = new Date();
+  const fill = document.getElementById('lici-cd-fill');
+  const val  = document.getElementById('lici-cd-val');
+  const pill = document.getElementById('lici-pill');
+  if (!fill||!val||!pill) return;
+  const totalMs = LICI_CLOSE - LICI_OPEN;
+
+  if (now < LICI_OPEN) {
+    const diff = LICI_OPEN - now;
+    const d = Math.floor(diff/86400000);
+    const h = Math.floor((diff%86400000)/3600000);
+    const m = Math.floor((diff%3600000)/60000);
+    val.textContent = d > 0 ? `${d}d ${h}h ${pad(m)}m` : `${h}h ${pad(m)}m`;
+    val.style.color='var(--amber)'; fill.style.background='var(--amber)'; fill.style.width='0%';
+    pill.style.cssText='background:rgba(240,160,61,.12);color:var(--amber);border:1px solid rgba(240,160,61,.25)';
+    pill.innerHTML='⏳ Próxima';
+  } else if (now<=LICI_CLOSE) {
+    const rem = LICI_CLOSE - now;
+    const pct = Math.max(0,Math.min(100,(rem/totalMs)*100));
+    val.textContent = `${pad(Math.floor(rem/3600000))}:${pad(Math.floor((rem%3600000)/60000))}:${pad(Math.floor((rem%60000)/1000))}`;
+    val.style.color='var(--accent)'; fill.style.background='var(--accent)'; fill.style.width=pct+'%';
+    pill.style.cssText='background:rgba(0,200,150,.12);color:var(--accent);border:1px solid rgba(0,200,150,.25)';
+    pill.innerHTML='● En curso';
+  } else {
+    val.textContent='Cerrada'; val.style.color='var(--muted)';
+    fill.style.background='var(--muted)'; fill.style.width='0%';
+    pill.style.cssText='background:rgba(100,100,120,.12);color:var(--muted);border:1px solid rgba(100,100,120,.2)';
+    pill.innerHTML='✓ Cerrada';
+  }
+}
+
+initLici();
+updateLici();
+setInterval(updateLici, 1000);
+
+updateClock();
+
+// ── SAMSUNG DEX / TV SCALING ──
+// DeX reporta screen.width real aunque el viewport sea menor
+(function scaleForTV() {
+  const sw = window.screen.width;
+  const sh = window.screen.height;
+  const vw = window.innerWidth;
+
+  // Detectar DeX: screen grande pero viewport puede estar escalado
+  let baseFontPx;
+  if (sw >= 3840 || vw >= 3840)      baseFontPx = 26; // 4K
+  else if (sw >= 2560 || vw >= 2560) baseFontPx = 22; // QHD
+  else if (sw >= 1920 || vw >= 1920) baseFontPx = 19; // FHD TV
+  else if (sw >= 1600 || vw >= 1600) baseFontPx = 17; // HD+
+  else                                baseFontPx = 15; // laptop/preview
+
+  document.documentElement.style.fontSize = baseFontPx + 'px';
+  console.log(`[TV Scale] screen=${sw}×${sh} viewport=${vw} → fontSize=${baseFontPx}px`);
+})();
+async function fetchTamar() {
+  try {
+    const r = await fetch(API_TAMAR);
+    const data = await r.json();
+    const results = data?.results || data?.data || [];
+    if (results.length) {
+      const last = results[results.length - 1];
+      const prev = results.length > 1 ? results[results.length - 2] : last;
+      tamarCur = parseFloat(last.valor || last.value) || tamarCur;
+      const d = last.fecha || last.date || '';
+      const tamarDateEl = $('tamar-date');
+      if (tamarDateEl) tamarDateEl.textContent = d;
+      tamarHist = results.slice(-30).map(r => parseFloat(r.valor || r.value) || tamarCur);
+    }
+  } catch(e) { console.warn('TAMAR fetch error', e); }
+}
+
+async function fetchPF() {
+  try {
+    const r = await fetch(API_PF);
+    const data = await r.json();
+    if (data.ok && data.data?.length) {
+      PF_BANKS.length = 0;
+      data.data.forEach(b => PF_BANKS.push({ name: b.nombre, tna: b.tna30, mer: b.mer }));
+    }
+  } catch(e) { console.warn('PF fetch error', e); }
+}
+
+async function fetchMepCcl() {
+  try {
+    const r = await fetch(API_BONDS);
+    const data = await r.json();
+    const al30  = data.find(d => d.symbol === 'AL30')?.c;
+    const al30d = data.find(d => d.symbol === 'AL30D')?.c;
+    const al30c = data.find(d => d.symbol === 'AL30C')?.c;
+    if (al30 && al30d) {
+      const prev = mepCur;
+      mepCur = +(al30 / al30d).toFixed(2);
+      mepHist = [...mepHist.slice(1), mepCur];
+      renderRate('mep-val','mep-chg',mepCur,prev);
+    }
+    if (al30 && al30c) {
+      const prev = cclCur;
+      cclCur = +(al30 / al30c).toFixed(2);
+      cclHist = [...cclHist.slice(1), cclCur];
+      renderRate('ccl-val','ccl-chg',cclCur,prev);
+    }
+  } catch(e) { console.warn('MEP/CCL fetch error', e); }
+}
+
+async function init() {
+  // Load everything in parallel on page load
+  await Promise.all([
+    fetchCSVs(),
+    fetchLivePrices(),
+    fetchTamar(),
+    fetchPF(),
+    fetchDB(),
+    fetchLici(),
+    fetchHistorico(),
+  ]);
+
+  buildBondData();
+  updateRates();
+  updateBonds();
+  renderPF();
+  renderDB();
+
+  // Fetch stocks for ticker
+  try {
+    const r = await fetch(API_STOCKS);
+    const data = await r.json();
+    stocks = data
+      .filter(s => s.c > 0 && !s.symbol.endsWith('D') && !s.symbol.endsWith('5'))
+      .map(s => ({ s: s.symbol, c: s.c, p: s.pct_change || 0, cur: s.c }));
+  } catch(e) { console.warn('Stocks fetch error', e); }
+
+  renderTicker();
+
+  // MEP/CCL desde bonds live (sobre el histórico ya cargado)
+  await fetchMepCcl();
+
+  drawChart('chart-mep',  mepHist,   '#00c896');
+  drawChart('chart-ccl',  cclHist,   '#3d8ef0');
+  drawChart('chart-tamar',tamarHist, '#f0a03d');
+}
+
+init();
+
+// Refresh every 10s — bonds, stocks, MEP/CCL
+setInterval(async () => {
+  await Promise.all([ fetchLivePrices(), fetchMepCcl() ]);
+  buildBondData();
+  updateBonds();
+  stocks = stocks.map(s=>({...s, cur: livePrices[s.s] || rnd(s.cur,.002)}));
+  renderTicker();
+}, 10000);
+
+// Refresh TAMAR y PF cada 5 minutos
+setInterval(async () => {
+  await Promise.all([ fetchTamar(), fetchPF() ]);
+  renderRate('tamar-val','tamar-chg',tamarCur,tamarCur,true);
+  drawChart('chart-tamar', tamarHist, '#f0a03d');
+  renderPF();
+}, 300000);
+
+setInterval(updateClock, 1000);
+</script>
+</body>
+</html>
