@@ -1,4 +1,4 @@
-# Dashboard Mercados Argentina
+# Dashboard Mercados  Argentina
 
 Dashboard financiero en tiempo real para TV/Samsung DeX.
 
