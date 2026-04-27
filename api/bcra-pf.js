@@ -1,18 +1,16 @@
-// api/bcra-pf.js
-// Usa Browserless.io para renderizar la página del BCRA con JS completo
-
-const BROWSERLESS_TOKEN = process.env.BROWSERLESS_TOKEN || '2UFePR4CoB5pVQx595f1788ea888c987e3807f0611346a48e';
-const BCRA_URL = 'https://www.bcra.gob.ar/plazos-fijos-online/';
+// api/bcra-pf.js — proxy al servidor Cloud Run
+const LOCAL_SERVER = process.env.LOCAL_SERVER_URL || 'https://cabezon-server-342455707797.us-central1.run.app';
 
 const NOMBRE_CORTO = {
-  'NACION': 'Nación', 'GALICIA': 'Galicia', 'PROVINCIA': 'Provincia',
-  'BBVA': 'BBVA', 'SANTANDER': 'Santander', 'MACRO': 'Macro',
-  'CIUDAD': 'Ciudad', 'HIPOTECARIO': 'Hipotecario', 'HSBC': 'HSBC',
-  'ICBC': 'ICBC', 'MERIDIAN': 'Meridian', 'PLUS': 'Plus Cambio',
-  'BRUBANK': 'Brubank', 'PATAGONIA': 'Patagonia', 'SUPERVIELLE': 'Supervielle',
-  'CREDICOOP': 'Credicoop', 'COMAFI': 'Comafi', 'BIND': 'BIND',
-  'NARANJA': 'Naranja X', 'VOII': 'VOII', 'SOL': 'Banco del Sol',
-  'CMF': 'CMF', 'BICA': 'Bica', 'REBA': 'Reba', 'PIANO': 'Piano',
+  'NACION': 'Nación', 'GALICIA': 'Galicia', 'PROVINCIA DE BUENOS': 'Provincia BsAs',
+  'PROVINCIA DE CORDOBA': 'Prov. Córdoba', 'PROVINCIA DE TIERRA': 'Prov. T. del Fuego',
+  'PROVINCIA': 'Provincia', 'BBVA': 'BBVA', 'SANTANDER': 'Santander',
+  'MACRO': 'Macro', 'CIUDAD': 'Ciudad', 'HIPOTECARIO': 'Hipotecario',
+  'MERIDIAN': 'Meridian', 'VOII': 'VOII', 'DEL SOL': 'Banco del Sol',
+  'CMF': 'CMF', 'BICA': 'Bica', 'REBA': 'Reba', 'MASVENTAS': 'Masventas',
+  'CRÉDITO REGIONAL': 'Créd. Regional', 'CREDITO REGIONAL': 'Créd. Regional',
+  'BIBANK': 'Bibank', 'MARIVA': 'Mariva', 'DINO': 'Dino', 'JULIO': 'Julio',
+  'COMAFI': 'Comafi', 'CREDICOOP': 'Credicoop', 'UALA': 'Uala',
 };
 
 function abreviar(nombre) {
@@ -25,69 +23,29 @@ function abreviar(nombre) {
   return { nombre: clean, mer: false };
 }
 
-function stripTags(str) {
-  return str.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').trim();
-}
-
-function parsearHTML(html) {
-  const rows = html.match(/<tr[^>]*>[\s\S]*?<\/tr>/gi) || [];
-  const bancos = [];
-
-  for (const row of rows) {
-    const cells = (row.match(/<t[dh][^>]*>([\s\S]*?)<\/t[dh]>/gi) || [])
-      .map(c => stripTags(c));
-
-    if (cells.length < 2) continue;
-    const nombre = cells[0];
-    if (!nombre || nombre.length < 3) continue;
-    if (/entidad|institución|banco\s*$/i.test(nombre)) continue;
-
-    let tna = null;
-    for (let i = 1; i < cells.length; i++) {
-      const val = parseFloat(cells[i].replace(',', '.'));
-      if (!isNaN(val) && val > 5 && val < 150) { tna = val; break; }
-    }
-    if (!tna) continue;
-
-    const mapped = abreviar(nombre);
-    if (!mapped) continue;
-    bancos.push({ nombre: mapped.nombre, tna30: tna, mer: mapped.mer });
-  }
-
-  return bancos;
-}
-
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 's-maxage=120, stale-while-revalidate=300');
+  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=120');
 
+  // 1. Intentar servidor Cloud Run (Playwright propio)
   try {
-    // Browserless content API — renderiza la página con JS y devuelve el HTML
-    const r = await fetch(`https://chrome.browserless.io/content?token=${BROWSERLESS_TOKEN}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        url: BCRA_URL,
-        waitFor: 3000, // esperar 3s a que cargue el JS
-        gotoOptions: { waitUntil: 'networkidle2', timeout: 15000 },
-      }),
+    const r = await fetch(`${LOCAL_SERVER}/pf`, {
+      headers: { 'User-Agent': 'Mozilla/5.0' },
+      signal: AbortSignal.timeout(10000),
     });
-
-    if (!r.ok) throw new Error(`Browserless HTTP ${r.status}: ${await r.text()}`);
-    const html = await r.text();
-
-    const bancos = parsearHTML(html);
-    if (!bancos.length) throw new Error(`Sin datos en HTML (${html.length} chars)`);
-
-    const seen = new Set();
-    const result = bancos
-      .filter(b => { if (seen.has(b.nombre)) return false; seen.add(b.nombre); return true; })
-      .sort((a, b) => b.tna30 - a.tna30);
-
-    return res.status(200).json({ ok: true, source: 'bcra-browserless', data: result, ts: new Date().toISOString() });
-
+    if (!r.ok) throw new Error(`Server HTTP ${r.status}`);
+    const data = await r.json();
+    if (data.ok && data.data?.length) {
+      return res.status(200).json({
+        ok: true,
+        source: 'local-python',
+        data: data.data,
+        ts: data.ts,
+      });
+    }
+    throw new Error(data.error || 'Sin datos del servidor');
   } catch (e) {
-    // Fallback: ArgentinaDatos
+    // 2. Fallback: ArgentinaDatos
     try {
       const r2 = await fetch('https://api.argentinadatos.com/v1/finanzas/tasas/plazoFijo/');
       const data = await r2.json();
@@ -97,11 +55,20 @@ export default async function handler(req, res) {
             const tnaRaw = b.tnaNoClientes ?? b.tnaClientes ?? 0;
             const tna30 = tnaRaw > 1 ? +parseFloat(tnaRaw).toFixed(2) : +parseFloat(tnaRaw * 100).toFixed(2);
             const mapped = abreviar(b.entidad);
-            return { nombre: mapped?.nombre || b.entidad, tna30, mer: /meridian/i.test(b.entidad) };
+            return {
+              nombre: mapped?.nombre || b.entidad,
+              tna30,
+              mer: /meridian/i.test(b.entidad),
+            };
           })
           .filter(b => b.tna30 > 0)
           .sort((a, b) => b.tna30 - a.tna30);
-        return res.status(200).json({ ok: true, source: 'argentinadatos-fallback', data: bancos, ts: new Date().toISOString() });
+        return res.status(200).json({
+          ok: true,
+          source: 'argentinadatos-fallback',
+          data: bancos,
+          ts: new Date().toISOString(),
+        });
       }
     } catch {}
 
