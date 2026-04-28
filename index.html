@@ -12,9 +12,9 @@
 <link rel="apple-touch-icon" href="/public/icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-html { font-size: 16px; }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
+html{font-size:16px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
   --bg:#060910;--panel:#0b0f18;--panel2:#0f1520;--border:#141c2e;--border2:#1a2440;
   --accent:#00c896;--blue:#3d8ef0;--amber:#f0a03d;--red:#e05252;--text:#c8d4e8;--muted:#3d5070;
   --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
@@ -22,8 +22,10 @@ html { font-size: 16px; }
 html,body{height:100%}
 body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;overflow:hidden}
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,200,150,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,150,.015) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
-.main{position:relative;z-index:1;flex:1;display:grid;grid-template-columns:1.7fr 1.7fr 1.4fr 1.5fr;grid-template-rows:auto 1fr 1fr;gap:1px;background:var(--border);padding:1px;min-height:0}
-.card-tf{grid-column:span 1;grid-row:span 2}.card-cer{grid-column:span 1;grid-row:span 2}.card-hd{grid-column:span 1;grid-row:span 2}.card-lici{grid-column:span 1}.card-pf{grid-column:span 1}.card-db{grid-column:span 1}
+.main{position:relative;z-index:1;flex:1;display:grid;grid-template-columns:1.7fr 1.7fr 1.4fr 1.5fr 1.5fr;grid-template-rows:auto 1fr 1fr;gap:1px;background:var(--border);padding:1px;min-height:0}
+.card-tf{grid-column:span 1;grid-row:span 2}.card-cer{grid-column:span 1;grid-row:span 2}.card-hd{grid-column:span 1;grid-row:span 2}
+.card-lici{grid-column:span 1}.card-pf{grid-column:span 1}.card-db{grid-column:span 1}
+.card-fci{grid-column:5;grid-row:1/span 3}
 .card{background:var(--panel);display:flex;flex-direction:column;overflow:hidden;min-height:0;animation:fadeUp .4s ease both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 .rate-wrap{display:flex;flex-direction:column;padding:.65rem 1.1rem .2rem;gap:.06rem}
@@ -53,7 +55,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .pf-table th{font-family:var(--mono);font-size:.58rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;padding:.32rem .6rem;border-bottom:1px solid var(--border);background:var(--panel2)}
 .pf-table th:last-child{text-align:right}
 .pf-table td{font-size:.82rem;padding:.36rem .6rem;border-bottom:1px solid rgba(20,28,46,.8)}
-.pf-table tr:last-child td{border-bottom:none}.pf-table tr:nth-child(n+6){display:none}
+.pf-table tr:last-child td{border-bottom:none}
 .row-mer td{background:rgba(0,200,150,.04)!important}.row-mer .pf-bank{color:var(--accent);font-weight:600}
 .pf-pos{font-family:var(--mono);font-size:.78rem;color:var(--muted);width:26px;text-align:center}.pf-pos.p1{color:var(--accent)}
 .pf-tna{font-family:var(--mono);font-size:.92rem;text-align:right;font-weight:600}.pf-tna.best{color:var(--accent)}
@@ -68,6 +70,16 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .db-pos{font-family:var(--mono);font-size:.78rem;color:var(--muted);width:26px;text-align:center}.db-pos.p1{color:var(--accent)}
 .db-bank{font-size:.92rem;font-weight:500}.db-bank.mer{color:var(--blue)}
 .db-venta{font-family:var(--mono);font-size:.92rem;text-align:right;font-weight:600}.db-venta.best{color:var(--accent)}
+/* FCI */
+.fci-wrap{flex:1;overflow:auto;min-height:0}
+.fci-table{width:100%;border-collapse:collapse}
+.fci-table th{font-family:var(--mono);font-size:.55rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;padding:.32rem .5rem;border-bottom:1px solid var(--border);background:var(--panel2)}
+.fci-table td{font-size:.72rem;padding:.34rem .5rem;border-bottom:1px solid rgba(20,28,46,.8);vertical-align:middle}
+.fci-table tr:last-child td{border-bottom:none}.fci-table tr:hover td{background:rgba(255,255,255,.02)}
+.fci-name{color:var(--text);font-size:.72rem;line-height:1.2}
+.fci-tna{font-family:var(--mono);font-size:.85rem;text-align:right;font-weight:600;color:var(--accent);white-space:nowrap}
+.fci-fecha{font-family:var(--mono);font-size:.65rem;text-align:right;color:var(--muted);white-space:nowrap}
+/* TICKER */
 .ticker-band{position:relative;z-index:10;flex-shrink:0;background:rgba(6,9,16,.97);border-top:1px solid var(--border)}
 .ticker-band::before,.ticker-band::after{content:'';position:absolute;top:0;bottom:0;width:50px;z-index:2;pointer-events:none}
 .ticker-band::before{left:0;background:linear-gradient(90deg,rgba(6,9,16,.97),transparent)}
@@ -86,32 +98,28 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .t-px{font-family:var(--mono);font-size:1.1rem;font-weight:500}
 .t-pct{font-family:var(--mono);font-size:.9rem}
 .t-up{color:var(--accent)}.t-dn{color:var(--red)}.t-flat{color:var(--muted)}
+/* LICI */
 .lici-dates{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);flex:1}
 .lici-cell{background:var(--panel);padding:.7rem .9rem;display:flex;align-items:center;justify-content:center}
 .lici-val{font-family:var(--mono);font-size:1.4rem;font-weight:700;color:var(--amber);line-height:1;text-align:center}
 .lici-cell.liq .lici-val{color:var(--muted);font-size:1.2rem}
 .lici-header{display:flex;align-items:center;padding:.45rem .9rem;border-bottom:1px solid var(--border);background:var(--panel2);flex-shrink:0}
 .lici-title{font-family:var(--mono);font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text)}
-.lici-track{overflow:hidden;position:absolute;left:62px;right:0;top:0;bottom:0;display:flex;align-items:center}
-.lici-scroll{display:flex;gap:0;white-space:nowrap;animation:lici-scroll 20s linear infinite;width:max-content}
-.lici-scroll:hover{animation-play-state:paused}
-@keyframes lici-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.lici-chip{display:inline-flex;align-items:center;gap:.3rem;padding:0 .75rem;border-right:1px solid var(--border);height:100%}
 .lici-type{font-family:var(--mono);font-size:.52rem;padding:.08rem .35rem;border-radius:3px}
 .lt-fija{background:rgba(0,200,150,.1);color:var(--accent);border:1px solid rgba(0,200,150,.2)}
 .lt-cer{background:rgba(61,142,240,.1);color:var(--blue);border:1px solid rgba(61,142,240,.2)}
 .lt-tamar{background:rgba(240,160,61,.1);color:var(--amber);border:1px solid rgba(240,160,61,.2)}
 .lt-link{background:rgba(224,82,82,.1);color:var(--red);border:1px solid rgba(224,82,82,.2)}
 .lt-usd{background:rgba(74,222,128,.1);color:#4ade80;border:1px solid rgba(74,222,128,.2)}
-.lici-chip-info{display:flex;flex-direction:column;gap:.05rem}
-.lici-chip-name{font-size:.65rem;color:var(--text);font-weight:500}
-.lici-chip-vto{font-family:var(--mono);font-size:.52rem;color:var(--muted)}
+/* SCALING */
 @media screen and (min-width:1600px){html{font-size:18px}.rate-val{font-size:2.3rem!important}.chart-svg{height:52px!important}}
 @media screen and (min-width:2400px){html{font-size:24px}.rate-val{font-size:3rem!important}.chart-svg{height:70px!important}.bond-table td{font-size:1.2rem!important}.pf-table td{font-size:1.1rem!important}.db-table td{font-size:1.1rem!important}}
 </style>
 </head>
 <body>
 <div class="main">
+
+  <!-- MEP -->
   <div class="card" style="animation-delay:.04s">
     <div class="rate-wrap">
       <div class="rate-name">💱 Dólar MEP</div>
@@ -119,6 +127,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     </div>
     <div class="chart-wrap"><svg class="chart-svg" id="chart-mep" viewBox="0 0 300 44" preserveAspectRatio="none"></svg></div>
   </div>
+
+  <!-- CCL -->
   <div class="card" style="animation-delay:.07s">
     <div class="rate-wrap">
       <div class="rate-name">💵 Dólar CCL</div>
@@ -126,6 +136,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     </div>
     <div class="chart-wrap"><svg class="chart-svg" id="chart-ccl" viewBox="0 0 300 44" preserveAspectRatio="none"></svg></div>
   </div>
+
+  <!-- TAMAR -->
   <div class="card" style="animation-delay:.10s">
     <div class="rate-wrap">
       <div class="rate-name">📊 Tasa TAMAR</div>
@@ -134,6 +146,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     </div>
     <div class="chart-wrap"><svg class="chart-svg" id="chart-tamar" viewBox="0 0 300 44" preserveAspectRatio="none"></svg></div>
   </div>
+
+  <!-- LICI MECON -->
   <div class="card card-lici" style="animation-delay:.13s">
     <div class="lici-header" style="justify-content:space-between"><div class="lici-title">📋 Lici MECON</div><div id="lici-estado"></div></div>
     <div class="lici-dates">
@@ -141,27 +155,48 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <div class="lici-cell liq"><div class="lici-val" id="lici-liquidacion">—</div></div>
     </div>
   </div>
+
+  <!-- FCI — col 5 span 3 filas -->
+  <div class="card card-fci" style="animation-delay:.16s">
+    <div class="section-label">💼 FCI Mercado Dinero · top 5 <span id="fci-ts" style="opacity:.5;font-size:.8em"></span></div>
+    <div class="fci-wrap">
+      <table class="fci-table" id="tbl-fci"></table>
+    </div>
+  </div>
+
+  <!-- TASA FIJA -->
   <div class="card card-tf" style="animation-delay:.19s">
     <div class="bond-label"><span class="live-dot"></span>📈 Tasa Fija</div>
     <div class="bond-wrap"><table class="bond-table" id="tbl-tasafija"></table></div>
   </div>
+
+  <!-- CER -->
   <div class="card card-cer" style="animation-delay:.22s">
     <div class="bond-label"><span class="live-dot"></span>📊 CER</div>
     <div class="bond-wrap"><table class="bond-table" id="tbl-cer"></table></div>
   </div>
+
+  <!-- HARD DÓLAR -->
   <div class="card card-hd" style="animation-delay:.25s">
     <div class="bond-label"><span class="live-dot"></span>💵 Hard Dólar</div>
     <div class="bond-wrap"><table class="bond-table" id="tbl-hardusd"></table></div>
   </div>
+
+  <!-- PLAZO FIJO -->
   <div class="card card-pf" style="animation-delay:.28s">
     <div class="section-label">💰 Plazo Fijo Web · no clientes · TNA 30 días <span id="pf-ts" style="opacity:.5;font-size:.8em"></span> <span id="pf-source" style="font-size:.7em;opacity:.6"></span></div>
     <div class="pf-wrap"><table class="pf-table" id="tbl-pf"></table></div>
   </div>
+
+  <!-- DOLAR BANCOS -->
   <div class="card card-db" style="animation-delay:.31s">
     <div class="section-label">🏦 Dólar Bancos · precio vendedor <span id="db-ts" style="opacity:.5;font-size:.8em"></span></div>
     <div class="db-wrap"><table class="db-table" id="tbl-db"></table></div>
   </div>
+
 </div>
+
+<!-- TICKER -->
 <div class="ticker-band">
   <div class="ticker-top"></div>
   <div class="ticker-inner">
@@ -172,47 +207,81 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div class="ticker-track"><div class="ticker-scroll" id="ticker-scroll"></div></div>
   </div>
 </div>
+
 <script>
 const $=id=>document.getElementById(id);
 function fmt2(v){return v.toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2})}
 function fmtP(v){return fmt2(v)+'%'}
 function rnd(v,s=.003){return +(v*(1+(Math.random()-.5)*s)).toFixed(2)}
 function genHist(base,n=30,vol=.007){const a=[base];for(let i=1;i<n;i++)a.push(+(a[i-1]*(1+(Math.random()-.5)*vol)).toFixed(2));return a}
+
 const CSV_BONDS='https://docs.google.com/spreadsheets/d/e/2PACX-1vTDDCPaFWrl0LmClbajiHvYkeqbpczciXXnQV8VhWJ2QfMEhHo0tQGHpQFdN1UtFmGO--i2__OnSF8I/pub?gid=0&single=true&output=csv';
 const CSV_FLUJOS='https://docs.google.com/spreadsheets/d/e/2PACX-1vSUp-XJ7rx8hw0j_Rqy7RHrqCBwqwUxgH_BZQ6RmSY2sfXNHd7Yvb2vlLCYabemODWaCLdBoQ2kxCTW/pub?gid=0&single=true&output=csv';
 const API_STOCKS='/api/stocks',API_BONDS='/api/bonds',API_TAMAR='/api/tamar',API_PF='/api/bcra-pf',API_DB='/api/dolar-bancos',API_LICI='/api/lici',API_HISTORICO='/api/historico';
+const API_FCI_ULTIMO='https://api.argentinadatos.com/v1/finanzas/fci/mercadoDinero/ultimo';
+const API_FCI_PENULTIMO='https://api.argentinadatos.com/v1/finanzas/fci/mercadoDinero/penultimo';
+
 function parseCSV(text){const lines=text.trim().split('\n');const headers=lines[0].split(',').map(h=>h.trim().replace(/\r/g,''));return lines.slice(1).map(line=>{const vals=line.split(',').map(v=>v.trim().replace(/\r/g,''));const obj={};headers.forEach((h,i)=>obj[h]=vals[i]||'');return obj})}
 function calcFijaCer(row,precio){const vpv=parseFloat(row.VPV)||0,plazo=parseFloat(row.Plazo)||1;if(!precio||!vpv)return{tna:null,tir:null};const tna=((vpv-precio)/precio/plazo*365)*100,tir=(Math.pow(vpv/precio,365/plazo)-1)*100;return{tna:+tna.toFixed(2),tir:+tir.toFixed(2)}}
 function calcHardUsd(ticker,precio,flujos){const today=new Date();const flows=flujos.filter(f=>f.Ticker===ticker&&new Date(f.Fecha)>today).map(f=>({t:(new Date(f.Fecha)-today)/(365.25*86400000),cf:parseFloat(f.Flujo)||0})).filter(f=>f.cf>0);if(!flows.length||!precio)return{tir:null,md:null};let r=0.10;for(let i=0;i<50;i++){let pv=0,dpv=0;flows.forEach(({t,cf})=>{const disc=cf/Math.pow(1+r,t);pv+=disc;dpv-=t*disc/(1+r)});const f=pv-precio,df=dpv;if(Math.abs(df)<1e-12)break;const nr=r-f/df;if(Math.abs(nr-r)<1e-8){r=nr;break}r=nr}let sumPV=0,sumWt=0;flows.forEach(({t,cf})=>{const pv=cf/Math.pow(1+r,t);sumPV+=pv;sumWt+=t*pv});return{tir:+(r*100).toFixed(2),md:+(sumWt/sumPV/(1+r)).toFixed(2)}}
-function fmtPlazo(fechaStr){if(!fechaStr)return'—';const d=new Date(fechaStr);if(isNaN(d))return fechaStr;const m=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];return`${m[d.getMonth()]} ${String(d.getFullYear()).slice(2)}`}
+
 let bonds={tasafija:[],cer:[],hardusd:[]},csvBonds=[],csvFlujos=[],livePrices={},livePctChange={};
 async function fetchCSVs(){try{const[r1,r2]=await Promise.all([fetch(CSV_BONDS),fetch(CSV_FLUJOS)]);csvBonds=parseCSV(await r1.text());csvFlujos=parseCSV(await r2.text())}catch(e){console.warn('CSV',e)}}
-async function fetchLivePrices(){try{const[r1,r2]=await Promise.all([fetch(API_BONDS),fetch('/api/notes')]);const bonds=await r1.json();const notes=await r2.json();[...bonds,...notes].forEach(d=>{livePrices[d.symbol]=d.c;livePctChange[d.symbol]=d.pct_change??0})}catch(e){console.warn('LP',e)}}
+async function fetchLivePrices(){try{const[r1,r2]=await Promise.all([fetch(API_BONDS),fetch('/api/notes')]);const b=await r1.json();const n=await r2.json();[...b,...n].forEach(d=>{livePrices[d.symbol]=d.c;livePctChange[d.symbol]=d.pct_change??0})}catch(e){console.warn('LP',e)}}
 function buildBondData(){bonds.tasafija=[];bonds.cer=[];bonds.hardusd=[];csvBonds.forEach(row=>{const ticker=(row.Ticker||'').trim(),tipo=(row.Tipo||'').trim(),vpv=parseFloat(row.VPV)||0;const lp=livePrices[ticker]||livePrices[ticker.toUpperCase()]||null;const precio=lp||vpv;if(!ticker||!precio)return;const pct=livePctChange[ticker]??livePctChange[ticker.toUpperCase()]??0;const plazo=(row.Plazo||'').trim();if(tipo==='Tasa Fija'){const{tna,tir}=calcFijaCer(row,precio);bonds.tasafija.push({t:ticker,p:precio,pct,tna,tir,plazo,_plazoNum:parseFloat(row.Plazo)||0})}else if(tipo==='CER'){const{tna,tir}=calcFijaCer(row,precio);bonds.cer.push({t:ticker,p:precio,pct,tna,tir,plazo,_plazoNum:parseFloat(row.Plazo)||0})}else if(tipo==='Hard Dolar'){const{tir,md}=calcHardUsd(ticker,precio,csvFlujos);bonds.hardusd.push({t:ticker,p:precio,pct,tir,md,plazo,_mdNum:parseFloat(md)||0})}});bonds.tasafija.sort((a,b)=>a._plazoNum-b._plazoNum);bonds.cer.sort((a,b)=>a._plazoNum-b._plazoNum);bonds.hardusd.sort((a,b)=>a._mdNum-b._mdNum)}
 
-// FIX 1: tamarPrev guarda el dato real del dia anterior
 let mepCur=1284.6,cclCur=1301.2,tamarCur=31.06,tamarPrev=31.06,tamarDate='—';
 let mepPrevClose=null,cclPrevClose=null;
 let mepHist=genHist(mepCur-80),cclHist=genHist(cclCur-90),tamarHist=genHist(tamarCur-1,30,.003);
 const PF_BANKS=[],DB_BANKS=[];
 
+const MESES=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+function fmtFechaCorta(str){if(!str)return'—';const[y,m,d]=str.split('-');return`${parseInt(d)} ${MESES[parseInt(m)-1]}`}
+
+async function fetchFCI(){
+  try{
+    const[r1,r2]=await Promise.all([fetch(API_FCI_ULTIMO),fetch(API_FCI_PENULTIMO)]);
+    const ultimo=await r1.json();
+    const penultimo=await r2.json();
+    const conDatos=ultimo.filter(f=>f.fecha&&f.vcp&&f.patrimonio);
+    const top5=conDatos.sort((a,b)=>b.patrimonio-a.patrimonio).slice(0,5);
+    const mapPen={};
+    penultimo.forEach(f=>{if(f.vcp&&f.fecha)mapPen[f.fondo]=f});
+    const rows=top5.map(f=>{
+      const pen=mapPen[f.fondo];
+      if(!pen)return{fondo:f.fondo,tna:null,fecha:f.fecha};
+      const dias=(new Date(f.fecha)-new Date(pen.fecha))/86400000;
+      const tna=dias>0?((f.vcp-pen.vcp)/pen.vcp/dias*365*100):null;
+      return{fondo:f.fondo,tna,fecha:f.fecha};
+    });
+    renderFCI(rows);
+    const tsEl=$('fci-ts');
+    if(tsEl&&top5[0]?.fecha)tsEl.textContent='· '+fmtFechaCorta(top5[0].fecha);
+  }catch(e){console.warn('FCI',e)}
+}
+
+function renderFCI(rows){
+  const el=$('tbl-fci');if(!el)return;
+  el.innerHTML=`<thead><tr><th>Fondo</th><th style="text-align:right">TNA</th><th style="text-align:right">Fecha</th></tr></thead><tbody>${rows.map(r=>`<tr><td class="fci-name">${r.fondo}</td><td class="fci-tna">${r.tna!==null?r.tna.toFixed(2)+'%':'—'}</td><td class="fci-fecha">${fmtFechaCorta(r.fecha)}</td></tr>`).join('')}</tbody>`;
+}
+
 async function fetchDB(){try{const r=await fetch(API_DB);const data=await r.json();if(data.ok&&data.data?.length){DB_BANKS.length=0;data.data.forEach(b=>DB_BANKS.push({name:b.nombre,venta:b.venta,mer:b.mer}));const tsEl=$('db-ts');if(tsEl&&data.ts){const t=new Date(data.ts+'Z');tsEl.textContent='· '+t.getHours().toString().padStart(2,'0')+':'+t.getMinutes().toString().padStart(2,'0');}}}catch(e){console.warn('DB',e)}}
+
 async function fetchLici(){try{const r=await fetch(API_LICI);const data=await r.json();const lici=data.data;const recEl=document.getElementById('lici-recepcion'),liqEl=document.getElementById('lici-liquidacion'),badgeEl=document.getElementById('lici-estado');if(!lici){if(recEl)recEl.textContent='—';if(liqEl)liqEl.textContent='—';if(badgeEl)badgeEl.innerHTML='';return}if(recEl)recEl.textContent=lici.recepcion||'—';if(liqEl)liqEl.textContent=lici.liquidacion||'—';if(badgeEl){const cfg={activa:{txt:'ACTIVA',bg:'rgba(0,200,150,.15)',color:'var(--accent)',border:'rgba(0,200,150,.3)',dot:'●'},proxima:{txt:'PRÓXIMA',bg:'rgba(240,160,61,.15)',color:'var(--amber)',border:'rgba(240,160,61,.3)',dot:'⏳'},cerrada:{txt:'CERRADA',bg:'rgba(61,80,112,.2)',color:'var(--muted)',border:'rgba(61,80,112,.3)',dot:'✓'}};const s=cfg[lici.estado]||cfg.cerrada;badgeEl.innerHTML=`<span style="font-family:var(--mono);font-size:.55rem;font-weight:600;letter-spacing:.08em;padding:.15rem .5rem;border-radius:3px;background:${s.bg};color:${s.color};border:1px solid ${s.border}">${s.dot} ${s.txt}</span>`;}}catch(e){console.warn('Lici',e)}}
+
 async function fetchHistorico(){try{const[rAL30,rAL30D,rAL30C]=await Promise.all([fetch(`${API_HISTORICO}?ticker=AL30`),fetch(`${API_HISTORICO}?ticker=AL30D`),fetch(`${API_HISTORICO}?ticker=AL30C`)]);const dAL30=(await rAL30.json()).data||[],dAL30D=(await rAL30D.json()).data||[],dAL30C=(await rAL30C.json()).data||[];if(dAL30.length&&dAL30D.length){const mapD=Object.fromEntries(dAL30D.map(d=>[d.fecha,d.cierre]));const mep=dAL30.map(d=>mapD[d.fecha]?+(d.cierre/mapD[d.fecha]).toFixed(2):null).filter(Boolean);if(mep.length){mepHist=mep;mepCur=mep[mep.length-1];mepPrevClose=mep[mep.length-2]||mep[mep.length-1]}}if(dAL30.length&&dAL30C.length){const mapC=Object.fromEntries(dAL30C.map(d=>[d.fecha,d.cierre]));const ccl=dAL30.map(d=>mapC[d.fecha]?+(d.cierre/mapC[d.fecha]).toFixed(2):null).filter(Boolean);if(ccl.length){cclHist=ccl;cclCur=ccl[ccl.length-1];cclPrevClose=ccl[ccl.length-2]||ccl[ccl.length-1]}}}catch(e){console.warn('Hist',e)}}
 
 const STOCKS=[{s:'GGAL',c:6305,p:-1.48},{s:'YPFD',c:61575,p:0.98},{s:'PAMP',c:4965,p:-2.35},{s:'BMA',c:9925,p:-2.40},{s:'TGSU2',c:9545,p:-2.60},{s:'BBAR',c:6590,p:-2.51},{s:'CEPU',c:2240,p:-3.90},{s:'TRAN',c:3715,p:0.33},{s:'EDN',c:2060,p:-2.78},{s:'LOMA',c:2955,p:-0.75},{s:'SUPV',c:2398,p:-4.36},{s:'TXAR',c:623,p:-1.88},{s:'VALO',c:596.5,p:-0.41},{s:'BYMA',c:313,p:0.16},{s:'TGNO4',c:4230,p:-3.53},{s:'MIRG',c:18600,p:0.13},{s:'IRSA',c:2005,p:-4.97},{s:'CVH',c:6940,p:0.72},{s:'METR',c:1983,p:-1.58},{s:'ALUA',c:794.5,p:-1.30},{s:'CELU',c:305,p:10.50},{s:'ROSE',c:157,p:-5.98},{s:'MORI',c:28.5,p:-0.69},{s:'TECO2',c:3300,p:-2.14}];
 let stocks=STOCKS.map(s=>({...s,cur:s.c}));
 
-function drawChart(id,data,color){const svg=$(id);if(!svg)return;svg.innerHTML='';const W=300,H=44,p={t:2,b:2,l:1,r:1};const mn=Math.min(...data)*.999,mx=Math.max(...data)*1.001;const x=i=>p.l+(i/(data.length-1))*(W-p.l-p.r);const y=v=>p.t+(1-(v-mn)/(mx-mn))*(H-p.t-p.b);const defs=document.createElementNS('http://www.w3.org/2000/svg','defs');const g=document.createElementNS('http://www.w3.org/2000/svg','linearGradient');g.setAttribute('id',`g${id}`);g.setAttribute('x1','0');g.setAttribute('y1','0');g.setAttribute('x2','0');g.setAttribute('y2','1');[[0,.2],[1,0]].forEach(([o,op])=>{const s=document.createElementNS('http://www.w3.org/2000/svg','stop');s.setAttribute('offset',`${o*100}%`);s.setAttribute('stop-color',color);s.setAttribute('stop-opacity',op);g.appendChild(s)});defs.appendChild(g);svg.appendChild(defs);let aD=`M${x(0)},${H-p.b} L${x(0)},${y(data[0])}`;data.forEach((v,i)=>{aD+=` L${x(i)},${y(v)}`});aD+=` L${x(data.length-1)},${H-p.b} Z`;const area=document.createElementNS('http://www.w3.org/2000/svg','path');area.setAttribute('d',aD);area.setAttribute('fill',`url(#g${id})`);svg.appendChild(area);let lD=`M${x(0)},${y(data[0])}`;data.forEach((v,i)=>{if(i>0)lD+=` L${x(i)},${y(v)}`});const line=document.createElementNS('http://www.w3.org/2000/svg','path');line.setAttribute('d',lD);line.setAttribute('fill','none');line.setAttribute('stroke',color);line.setAttribute('stroke-width','1.5');line.setAttribute('stroke-linejoin','round');svg.appendChild(line);const dot=document.createElementNS('http://www.w3.org/2000/svg','circle');dot.setAttribute('cx',x(data.length-1));dot.setAttribute('cy',y(data[data.length-1]));dot.setAttribute('r','2.5');dot.setAttribute('fill',color);svg.appendChild(dot)}
+function drawChart(id,data,color){const svg=$(id);if(!svg)return;svg.innerHTML='';const clean=data.map(v=>parseFloat(v)).filter(v=>!isNaN(v)&&isFinite(v));if(clean.length<2)return;const W=300,H=44,p={t:2,b:2,l:1,r:1};const mn=Math.min(...clean)*.999,mx=Math.max(...clean)*1.001;const x=i=>p.l+(i/(clean.length-1))*(W-p.l-p.r);const y=v=>p.t+(1-(v-mn)/(mx-mn))*(H-p.t-p.b);const defs=document.createElementNS('http://www.w3.org/2000/svg','defs');const g=document.createElementNS('http://www.w3.org/2000/svg','linearGradient');g.setAttribute('id',`g${id}`);g.setAttribute('x1','0');g.setAttribute('y1','0');g.setAttribute('x2','0');g.setAttribute('y2','1');[[0,.2],[1,0]].forEach(([o,op])=>{const s=document.createElementNS('http://www.w3.org/2000/svg','stop');s.setAttribute('offset',`${o*100}%`);s.setAttribute('stop-color',color);s.setAttribute('stop-opacity',op);g.appendChild(s)});defs.appendChild(g);svg.appendChild(defs);let aD=`M${x(0)},${H-p.b} L${x(0)},${y(clean[0])}`;clean.forEach((v,i)=>{aD+=` L${x(i)},${y(v)}`});aD+=` L${x(clean.length-1)},${H-p.b} Z`;const area=document.createElementNS('http://www.w3.org/2000/svg','path');area.setAttribute('d',aD);area.setAttribute('fill',`url(#g${id})`);svg.appendChild(area);let lD=`M${x(0)},${y(clean[0])}`;clean.forEach((v,i)=>{if(i>0)lD+=` L${x(i)},${y(v)}`});const line=document.createElementNS('http://www.w3.org/2000/svg','path');line.setAttribute('d',lD);line.setAttribute('fill','none');line.setAttribute('stroke',color);line.setAttribute('stroke-width','1.5');line.setAttribute('stroke-linejoin','round');svg.appendChild(line);const dot=document.createElementNS('http://www.w3.org/2000/svg','circle');dot.setAttribute('cx',x(clean.length-1));dot.setAttribute('cy',y(clean[clean.length-1]));dot.setAttribute('r','2.5');dot.setAttribute('fill',color);svg.appendChild(dot)}
 
 function renderRate(valId,chgId,cur,prev,isRate=false){const el=$(valId);if(!el)return;el.textContent=isRate?fmtP(cur):`$${fmt2(cur)}`;const chg=$(chgId);if(!chg)return;const pct=(((cur-prev)/prev)*100).toFixed(2);const up=cur>prev;const arrow=cur>prev?'▲':cur<prev?'▼':'—';if(isRate){const bps=Math.round((cur-prev)*100);const sign=bps>0?'+':'';chg.innerHTML=`<span class="${up?'chg-up':'chg-down'}">${arrow} ${Math.abs(pct)}% <span style="font-size:.75em;opacity:.75">${sign}${bps}bps</span></span>`}else{chg.innerHTML=`<span class="${up?'chg-up':'chg-down'}">${arrow} ${Math.abs(pct)}%</span>`}}
 
-// FIX 2: updateRates no toca TAMAR con rnd(), usa tamarPrev real
-function updateRates(){const pm=mepCur,pc=cclCur;mepCur=rnd(mepCur,.002);cclCur=rnd(cclCur,.002);renderRate('mep-val','mep-chg',mepCur,pm);renderRate('ccl-val','ccl-chg',cclCur,pc);renderRate('tamar-val','tamar-chg',tamarCur,tamarPrev,true);const d=$('tamar-date');if(d)d.textContent=tamarDate}
-
 function renderFijaCer(id,data){const el=$(id);if(!el)return;el.innerHTML=`<thead><tr><th>Ticker</th><th>Precio</th><th>Var%</th><th>TNA%</th><th>TIR%</th><th>Plazo</th></tr></thead><tbody>${data.map(b=>{const pct=b.pct??0;const up=pct>0,dn=pct<0;const arrow=up?'▲':dn?'▼':'';const varClass=up?'td-up':dn?'td-dn':'';return`<tr><td class="td-tk">${b.t}</td><td class="td-nr ${varClass}">${(+b.p).toFixed(2)}</td><td class="td-var ${varClass}">${arrow}${Math.abs(pct).toFixed(1)}</td><td class="td-nr">${b.tna!==null?(+b.tna).toFixed(1):'—'}</td><td class="td-nr">${b.tir!==null?(+b.tir).toFixed(1):'—'}</td><td class="td-nr td-mt">${b.plazo}</td></tr>`}).join('')}</tbody>`}
 function renderHardUsd(id,data){const el=$(id);if(!el)return;el.innerHTML=`<thead><tr><th>Ticker</th><th>Precio</th><th>Var%</th><th>TIR%</th><th>MD</th></tr></thead><tbody>${data.map(b=>{const pct=b.pct??0;const up=pct>0,dn=pct<0;const arrow=up?'▲':dn?'▼':'';const varClass=up?'td-up':dn?'td-dn':'';return`<tr><td class="td-tk">${b.t}</td><td class="td-nr ${varClass}">${(+b.p).toFixed(2)}</td><td class="td-var ${varClass}">${arrow}${Math.abs(pct).toFixed(1)}</td><td class="td-nr">${b.tir!==null?(+b.tir).toFixed(1):'—'}</td><td class="td-nr td-mt">${b.md!==null?(+b.md).toFixed(1):'—'}</td></tr>`}).join('')}</tbody>`}
-function updateBonds(){bonds.tasafija=bonds.tasafija.map(b=>({...b,p:livePrices[b.t]||rnd(b.p,.002)}));bonds.cer=bonds.cer.map(b=>({...b,p:livePrices[b.t]||rnd(b.p,.002)}));bonds.hardusd=bonds.hardusd.map(b=>({...b,p:livePrices[b.t]||rnd(b.p,.002)}));renderFijaCer('tbl-tasafija',bonds.tasafija);renderFijaCer('tbl-cer',bonds.cer);renderHardUsd('tbl-hardusd',bonds.hardusd)}
+function updateBonds(){buildBondData();renderFijaCer('tbl-tasafija',bonds.tasafija);renderFijaCer('tbl-cer',bonds.cer);renderHardUsd('tbl-hardusd',bonds.hardusd)}
+
 function renderPF(){
   const sorted=[...PF_BANKS].sort((a,b)=>b.tna-a.tna);
   const uniq=[...new Set(sorted.map(x=>x.tna))].sort((a,b)=>b-a);
@@ -222,25 +291,23 @@ function renderPF(){
   $('tbl-pf').innerHTML=`<thead><tr><th>#</th><th>Banco</th><th>TNA</th><th>Ranking</th></tr></thead><tbody>${sorted.map(b=>{const pos=denseRank(b.tna);return`<tr class="${b.mer?'row-mer':''}"><td class="pf-pos ${pos===1?'p1':''}">#${pos}</td><td class="${b.mer?'pf-bank':''}">${b.name}</td><td class="pf-tna ${pos===1?'best':''}">${fmtP(b.tna)}</td><td style="font-family:var(--mono);font-size:.75rem;text-align:right;color:var(--muted)">${b.mer?`<span class="rank-tag">▲ ${merPos}° / ${uniq.length}</span>`:''}</td></tr>`}).join('')}</tbody>`;
 }
 function renderDB(){const sorted=[...DB_BANKS].sort((a,b)=>a.venta-b.venta);$('tbl-db').innerHTML=`<thead><tr><th>#</th><th>Banco</th><th>Venta</th></tr></thead><tbody>${sorted.map((b,i)=>`<tr class="${i===0?'row-db-best':b.mer?'row-db-mer':''}"><td class="db-pos ${i===0?'p1':''}">${i+1}</td><td class="db-bank ${b.mer?'mer':''}">${b.name}</td><td class="db-venta ${i===0?'best':''}">$${fmt2(b.venta)}</td></tr>`).join('')}</tbody>`}
-function renderTicker(){$('ticker-scroll').innerHTML=[...stocks,...stocks].map(s=>{const up=s.p>0,dn=s.p<0;const arrow=up?'\u25b2':dn?'\u25bc':'\u2014';const cls=up?'t-up':dn?'t-dn':'t-flat';return`<span class="ticker-item"><span class="t-sym">${s.s}</span><span class="t-px ${cls}">${fmt2(s.cur)}</span><span class="t-pct ${cls}">${arrow}${Math.abs(s.p).toFixed(2)}%</span></span>`}).join('')}
+function renderTicker(){$('ticker-scroll').innerHTML=[...stocks,...stocks].map(s=>{const up=s.p>0,dn=s.p<0;const arrow=up?'▲':dn?'▼':'—';const cls=up?'t-up':dn?'t-dn':'t-flat';return`<span class="ticker-item"><span class="t-sym">${s.s}</span><span class="t-px ${cls}">${fmt2(s.cur)}</span><span class="t-pct ${cls}">${arrow}${Math.abs(s.p).toFixed(2)}%</span></span>`}).join('')}
 function updateClock(){const now=new Date();$('clock').textContent=`${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`}
 
-const LICI_INST=[{type:'lt-fija',label:'Tasa Fija',name:'LECAP',vto:'Jul 26'},{type:'lt-cer',label:'CER',name:'BONCER',vto:'Sep 27'},{type:'lt-cer',label:'CER',name:'BONCER',vto:'Sep 28'},{type:'lt-tamar',label:'TAMAR',name:'TMF27',vto:'Feb 27'},{type:'lt-link',label:'DL',name:'BONO DL',vto:'Jun 28'},{type:'lt-usd',label:'USD',name:'AO27',vto:'Oct 27'},{type:'lt-usd',label:'USD',name:'BONAR',vto:'Oct 28'}];
-function initLici(){const el=document.getElementById('lici-scroll');if(!el)return;el.innerHTML=[...LICI_INST,...LICI_INST].map(i=>`<div class="lici-chip"><span class="lici-type ${i.type}">${i.label}</span><div class="lici-chip-info"><span class="lici-chip-name">${i.name}</span><span class="lici-chip-vto">${i.vto}</span></div></div>`).join('')}
-
-initLici();
-updateClock();
-
-(function scaleForTV(){const sw=window.screen.width,vw=window.innerWidth;let f;if(sw>=3840||vw>=3840)f=26;else if(sw>=2560||vw>=2560)f=22;else if(sw>=1920||vw>=1920)f=19;else if(sw>=1600||vw>=1600)f=17;else f=15;document.documentElement.style.fontSize=f+'px'})();
-
-// FIX 3: fetchTamar guarda tamarPrev con el dato real del dia anterior
 async function fetchTamar(){try{const r=await fetch(API_TAMAR);const data=await r.json();const detalle=data?.results?.[0]?.detalle||data?.results||data?.data||[];if(detalle.length){const last=detalle[detalle.length-1];const prev=detalle.length>1?detalle[detalle.length-2]:last;tamarPrev=parseFloat(prev.valor||prev.value)||tamarPrev;tamarCur=parseFloat(last.valor||last.value)||tamarCur;tamarDate=last.fecha||last.date||'—';const el=$('tamar-date');if(el){el.textContent=data.cached?tamarDate+' · cache':tamarDate;el.style.opacity=data.cached?'0.5':'1';}tamarHist=detalle.slice(-30).map(r=>parseFloat(r.valor||r.value)||tamarCur)}}catch(e){console.warn('TAMAR',e)}}
+
 async function fetchPF(){try{const r=await fetch(API_PF);const data=await r.json();if(data.ok&&data.data?.length){PF_BANKS.length=0;data.data.forEach(b=>PF_BANKS.push({name:b.nombre,tna:b.tna30,mer:b.mer}));const tsEl=$('pf-ts');if(tsEl&&data.ts){const t=new Date(data.ts+'Z');tsEl.textContent='· '+t.getHours().toString().padStart(2,'0')+':'+t.getMinutes().toString().padStart(2,'0');}const srcEl=$('pf-source');if(srcEl)srcEl.textContent=data.source==='local-python'?'🟢 BCRA':data.source==='argentinadatos-fallback'?'🟡 fallback':'';}}}catch(e){console.warn('PF',e)}}
+
 async function fetchMepCcl(){try{const r=await fetch(API_BONDS);const data=await r.json();const al30=data.find(d=>d.symbol==='AL30')?.c,al30d=data.find(d=>d.symbol==='AL30D')?.c,al30c=data.find(d=>d.symbol==='AL30C')?.c;if(al30&&al30d){const mepNew=+(al30/al30d).toFixed(2);mepHist=[...mepHist.slice(1),mepNew];mepCur=mepNew;const mepBase=mepPrevClose||mepCur;renderRate('mep-val','mep-chg',mepCur,mepBase)}if(al30&&al30c){const cclNew=+(al30/al30c).toFixed(2);cclHist=[...cclHist.slice(1),cclNew];cclCur=cclNew;const cclBase=cclPrevClose||cclCur;renderRate('ccl-val','ccl-chg',cclCur,cclBase)}}catch(e){console.warn('MEP/CCL',e)}}
 
+updateClock();
+(function scaleForTV(){const sw=window.screen.width,vw=window.innerWidth;let f;if(sw>=3840||vw>=3840)f=26;else if(sw>=2560||vw>=2560)f=22;else if(sw>=1920||vw>=1920)f=19;else if(sw>=1600||vw>=1600)f=17;else f=15;document.documentElement.style.fontSize=f+'px'})();
+
 async function init(){
-  await Promise.all([fetchCSVs(),fetchLivePrices(),fetchTamar(),fetchPF(),fetchDB(),fetchLici(),fetchHistorico()]);
-  buildBondData();updateRates();updateBonds();renderPF();renderDB();
+  await Promise.all([fetchCSVs(),fetchLivePrices(),fetchTamar(),fetchPF(),fetchDB(),fetchLici(),fetchHistorico(),fetchFCI()]);
+  buildBondData();
+  renderRate('tamar-val','tamar-chg',tamarCur,tamarPrev,true);
+  updateBonds();renderPF();renderDB();
   try{const r=await fetch(API_STOCKS);const data=await r.json();stocks=data.filter(s=>s.c>0&&!s.symbol.endsWith('D')&&!s.symbol.endsWith('5')).map(s=>({s:s.symbol,c:s.c,p:s.pct_change||0,cur:s.c}))}catch(e){console.warn('Stocks',e)}
   renderTicker();
   await fetchMepCcl();
@@ -250,10 +317,17 @@ async function init(){
 }
 init();
 
-setInterval(async()=>{await Promise.all([fetchLivePrices(),fetchMepCcl()]);buildBondData();updateBonds();stocks=stocks.map(s=>({...s,cur:livePrices[s.s]||rnd(s.cur,.002)}));renderTicker()},10000);
+// Refresh bonos + MEP/CCL cada 10s
+setInterval(async()=>{await Promise.all([fetchLivePrices(),fetchMepCcl()]);updateBonds();stocks=stocks.map(s=>({...s,cur:livePrices[s.s]||rnd(s.cur,.002)}));renderTicker()},10000);
 
-// FIX 4: refresh TAMAR usa tamarPrev real
+// Refresh TAMAR + PF cada 5 min
 setInterval(async()=>{await Promise.all([fetchTamar(),fetchPF()]);renderRate('tamar-val','tamar-chg',tamarCur,tamarPrev,true);drawChart('chart-tamar',tamarHist,'#f0a03d');renderPF()},300000);
+
+// Refresh DB cada 30s
+setInterval(async()=>{await fetchDB();renderDB()},30000);
+
+// Refresh FCI cada hora en horario hábil
+setInterval(async()=>{const h=new Date().getHours();if(h>=9&&h<18){await fetchFCI()}},3600000);
 
 setInterval(updateClock,1000);
 </script>
