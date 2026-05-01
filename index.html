@@ -286,18 +286,7 @@ function fmtTS(d){return String(d.getHours()).padStart(2,'0')+':'+String(d.getMi
 var progState={};
 function initProg(key,intervalSec){progState[key]={lastRefresh:Date.now(),interval:intervalSec*1000}}
 function touchProg(key){if(progState[key])progState[key].lastRefresh=Date.now();var tsEl=$(key.replace('prog-','ts-'));if(tsEl)tsEl.textContent=fmtTS(new Date())}
-function updateProgs(){
-  var now=Date.now();
-  Object.keys(progState).forEach(function(key){
-    var st=progState[key];
-    var elapsed=now-st.lastRefresh;
-    var pct=Math.max(0,100-elapsed/st.interval*100);
-    var remaining=Math.max(0,Math.round((st.interval-elapsed)/1000));
-    var pbEl=$(key);var cdEl=$(key.replace('pb-','cd-'));
-    if(pbEl)pbEl.style.width=pct+'%';
-    if(cdEl)cdEl.textContent=fmtHMS(remaining);
-  });
-}
+function updateProgs(){var now=Date.now();Object.keys(progState).forEach(function(key){var st=progState[key];var elapsed=now-st.lastRefresh;var pct=Math.max(0,100-elapsed/st.interval*100);var remaining=Math.max(0,Math.round((st.interval-elapsed)/1000));var pbEl=$(key);var cdEl=$(key.replace('pb-','cd-'));if(pbEl)pbEl.style.width=pct+'%';if(cdEl)cdEl.textContent=remaining>0?fmtHMS(remaining):'--:--';})}
 
 const CSV_BONDS='https://docs.google.com/spreadsheets/d/e/2PACX-1vTDDCPaFWrl0LmClbajiHvYkeqbpczciXXnQV8VhWJ2QfMEhHo0tQGHpQFdN1UtFmGO--i2__OnSF8I/pub?gid=0&single=true&output=csv';
 const CSV_FLUJOS='https://docs.google.com/spreadsheets/d/e/2PACX-1vSUp-XJ7rx8hw0j_Rqy7RHrqCBwqwUxgH_BZQ6RmSY2sfXNHd7Yvb2vlLCYabemODWaCLdBoQ2kxCTW/pub?gid=0&single=true&output=csv';
