@@ -182,9 +182,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   .mob-title{font-family:var(--mono);font-size:.9rem;font-weight:700;letter-spacing:.06em;color:var(--text)}
   .mob-sub{font-family:var(--mono);font-size:.55rem;color:var(--muted)}
   .mob-alert-badge{background:var(--red);color:#fff;font-family:var(--mono);font-size:.55rem;padding:.1rem .4rem;border-radius:10px;font-weight:700}
-  .mob-content{flex:1;overflow-y:auto;overflow-x:hidden;padding:.5rem .9rem 1rem;display:flex;flex-direction:column;gap:.6rem}
-  .mob-content::-webkit-scrollbar{display:none}
-  .mob-content{padding-bottom:80px}
+.mob-screen{display:none;flex:1;overflow-y:auto;flex-direction:column}
+.mob-content{padding:0.5rem 0.9rem 80px;display:flex;flex-direction:column;gap:0.6rem}
   .mob-sec{font-family:var(--mono);font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:.2rem 0 .3rem;border-bottom:1px solid var(--border);margin-bottom:.1rem}
   .mob-hero-row{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
   .mob-card{background:var(--panel);border-radius:12px;padding:.7rem .9rem;border:1px solid var(--border)}
