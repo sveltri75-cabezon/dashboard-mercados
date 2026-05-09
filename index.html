@@ -361,6 +361,8 @@ const CSV_FLUJOS='https://docs.google.com/spreadsheets/d/e/2PACX-1vSUp-XJ7rx8hw0
 const API_STOCKS='/api/stocks',API_BONDS='/api/bonds',API_TAMAR='/api/tamar',API_PF='/api/bcra-pf',API_DB='/api/dolar-bancos',API_LICI='/api/lici',API_HISTORICO='/api/historico';
 const API_FCI_ULTIMO='https://api.argentinadatos.com/v1/finanzas/fci/mercadoDinero/ultimo';
 const API_FCI_PENULTIMO='https://api.argentinadatos.com/v1/finanzas/fci/mercadoDinero/penultimo';
+const API_BCRA_SERIES='/api/bcra-series';
+var bcraData={};
 
 function parseCSV(text){const lines=text.trim().split('\n');const headers=lines[0].split(',').map(h=>h.trim().replace(/\r/g,''));return lines.slice(1).map(line=>{const vals=line.split(',').map(v=>v.trim().replace(/\r/g,''));const obj={};headers.forEach((h,i)=>obj[h]=vals[i]||'');return obj})}
 function calcFijaCer(row,precio){const vpv=parseFloat(row.VPV)||0,plazo=parseFloat(row.Plazo)||1;if(!precio||!vpv)return{tna:null,tir:null};const tna=((vpv-precio)/precio/plazo*365)*100,tir=(Math.pow(vpv/precio,365/plazo)-1)*100;return{tna:+tna.toFixed(2),tir:+tir.toFixed(2)}}
@@ -517,7 +519,7 @@ initProg('pb-pf',1800);initProg('pb-fci',3600);
 initProg('pb-db',30);
 
 async function init(){
-  await Promise.all([fetchCSVs(),fetchLivePrices(),fetchTamar(),fetchPF(),fetchDB(),fetchLici(),fetchHistorico(),fetchFCI()]);
+  await Promise.all([fetchCSVs(),fetchLivePrices(),fetchTamar(),fetchPF(),fetchDB(),fetchLici(),fetchHistorico(),fetchFCI(),fetchBcraSeries()]);
   buildBondData();
   renderRate('tamar-val','tamar-chg',tamarCur,tamarPrev,true);
   updateBonds();renderPF();renderDB();
@@ -531,6 +533,9 @@ async function init(){
   touchProg('pb-tf');touchProg('pb-cer');touchProg('pb-hd');
   if(IS_MOB) mobUpdateRates();
 }
+
+  async function fetchBcraSeries(){try{const r=await fetch(API_BCRA_SERIES);const data=await r.json();if(data.ok&&data.data){bcraData=data.data;mobRenderBcraSeries()}}catch(e){console.warn('BCRA',e)}}
+function mobRenderBcraSeries(){var series=[{key:'tamar',name:'TAMAR',id:'mob-bcra-tamar'},{key:'badlar',name:'BADLAR',id:'mob-bcra-badlar'},{key:'tm20',name:'TM20',id:'mob-bcra-tm20'},{key:'baibar',name:'BAIBAR',id:'mob-bcra-baibar'},{key:'pf30',name:'PF30',id:'mob-bcra-pf30'},{key:'adelantos',name:'Adelantos',id:'mob-bcra-adelantos'},{key:'personales',name:'Personales',id:'mob-bcra-personales'}];series.forEach(function(s){var d=bcraData[s.key];if(!d)return;var el=document.getElementById(s.id);if(el)el.textContent=d.valor.toFixed(2)+'%';var chgEl=document.getElementById(s.id+'-chg');if(chgEl){var up=d.bps>0;chgEl.innerHTML='<span class="'+(up?'chg-up':'chg-down')+'">'+(up?'+':'')+d.bps+'bps</span>'}})}
 init();
 
 setInterval(async function(){await Promise.all([fetchLivePrices(),fetchMepCcl()]);updateBonds();stocks=stocks.map(function(s){return{...s,cur:livePrices[s.s]||rnd(s.cur,.002)}});renderTicker();touchProg('pb-tf');touchProg('pb-cer');touchProg('pb-hd')},10000);
@@ -542,6 +547,8 @@ setInterval(async function(){await fetchDB();renderDB()},30000);
 setInterval(async function(){var h=new Date().getHours();if(h>=9&&h<18){await fetchFCI()}},3600000);
 
 setInterval(async function(){await fetchLici()},300000);
+
+setInterval(async function(){await fetchBcraSeries()},300000);
 
 setInterval(function(){updateClock();updateProgs()},1000);
 
