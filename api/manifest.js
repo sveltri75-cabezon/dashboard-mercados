@@ -10,7 +10,7 @@ export default function handler(req, res) {
     display: "standalone",
     background_color: "#060910",
     theme_color: "#060910",
-    orientation: "landscape",
+    orientation: "any",
     icons: [
       { src: "/public/icon-192.png", sizes: "192x192", type: "image/png" },
       { src: "/public/icon-512.png", sizes: "512x512", type: "image/png" }
