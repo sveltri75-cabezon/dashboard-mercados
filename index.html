@@ -167,6 +167,62 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .lt-usd{background:rgba(74,222,128,.1);color:#4ade80;border:1px solid rgba(74,222,128,.2)}
 @media screen and (min-width:1600px){html{font-size:18px}.rate-val{font-size:2.3rem!important}.chart-svg{height:52px!important}}
 @media screen and (min-width:2400px){html{font-size:24px}.rate-val{font-size:3rem!important}.chart-svg{height:70px!important}.bond-table td{font-size:1.2rem!important}.pf-table td{font-size:1.1rem!important}.db-table td{font-size:1.1rem!important}}
+
+/* ── MOBILE ── */
+.mob{display:none}
+@media(max-width:768px){
+  .main{display:none}
+  .ticker-band{display:none}
+  .theme-btn{display:none}
+  .theme-dropdown{display:none}
+  .mob{display:flex;flex-direction:column;height:100vh;overflow:hidden;background:var(--bg)}
+  .mob-status{display:flex;justify-content:space-between;padding:.3rem 1rem;flex-shrink:0}
+  .mob-time{font-family:var(--mono);font-size:.7rem;font-weight:600;color:var(--text)}
+  .mob-topbar{display:flex;justify-content:space-between;align-items:center;padding:.4rem 1rem .2rem;flex-shrink:0}
+  .mob-title{font-family:var(--mono);font-size:.9rem;font-weight:700;letter-spacing:.06em;color:var(--text)}
+  .mob-sub{font-family:var(--mono);font-size:.55rem;color:var(--muted)}
+  .mob-alert-badge{background:var(--red);color:#fff;font-family:var(--mono);font-size:.55rem;padding:.1rem .4rem;border-radius:10px;font-weight:700}
+  .mob-content{flex:1;overflow-y:auto;overflow-x:hidden;padding:.5rem .9rem 1rem;display:flex;flex-direction:column;gap:.6rem}
+  .mob-content::-webkit-scrollbar{display:none}
+  .mob-sec{font-family:var(--mono);font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:.2rem 0 .3rem;border-bottom:1px solid var(--border);margin-bottom:.1rem}
+  .mob-hero-row{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+  .mob-card{background:var(--panel);border-radius:12px;padding:.7rem .9rem;border:1px solid var(--border)}
+  .mob-label{font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.2rem}
+  .mob-val{font-family:var(--mono);font-size:1.5rem;font-weight:700;line-height:1}
+  .mob-val.green{color:var(--accent)}.mob-val.blue{color:var(--blue)}.mob-val.amber{color:var(--amber)}
+  .mob-chg{font-family:var(--mono);font-size:.65rem;margin-top:.2rem}
+  .mob-spark{width:100%;height:20px;display:block;margin-top:.4rem}
+  .mob-tamar{background:var(--panel);border-radius:12px;padding:.7rem .9rem;border:1px solid var(--border);display:flex;align-items:center;gap:.8rem}
+  .mob-tamar-left{flex:1}
+  .mob-list{background:var(--panel);border-radius:12px;overflow:hidden;border:1px solid var(--border)}
+  .mob-row{display:flex;align-items:center;padding:.5rem .9rem;border-bottom:1px solid var(--border);gap:.4rem}
+  .mob-row:last-child{border-bottom:none}
+  .mob-row-name{font-size:.82rem;font-weight:500;color:var(--text);flex:1}
+  .mob-row-name.mer{color:var(--blue);font-weight:700}
+  .mob-row-val{font-family:var(--mono);font-size:.85rem;font-weight:600}
+  .mob-row-chg{font-family:var(--mono);font-size:.62rem;min-width:44px;text-align:right}
+  .mob-row-pos{font-family:var(--mono);font-size:.62rem;color:var(--muted);min-width:18px}
+  .mob-row-sub{font-family:var(--mono);font-size:.55rem;color:var(--muted);min-width:40px;text-align:right}
+  .mob-spark-inline{flex-shrink:0}
+  .mob-nav{flex-shrink:0;background:var(--panel);border-top:1px solid var(--border);display:flex;padding:.3rem 0 .5rem;safe-area-inset-bottom:env(safe-area-inset-bottom)}
+  .mob-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:.15rem;padding:.3rem 0;cursor:pointer;position:relative}
+  .mob-nav-icon{font-size:1.2rem}
+  .mob-nav-label{font-family:var(--mono);font-size:.5rem;letter-spacing:.06em;color:var(--muted)}
+  .mob-nav-item.active .mob-nav-label{color:var(--accent)}
+  .mob-nav-dot{width:5px;height:5px;border-radius:50%;background:var(--red);position:absolute;top:0;right:calc(50% - 16px)}
+  .mob-screen{display:none;flex:1;overflow:hidden;flex-direction:column}
+  .mob-screen.active{display:flex}
+  .mob-alert-item{background:var(--panel);border-radius:10px;padding:.6rem .8rem;border:1px solid var(--border);border-left:3px solid var(--accent)}
+  .mob-alert-item.warn{border-left-color:var(--amber)}
+  .mob-alert-item.info{border-left-color:var(--blue)}
+  .mob-alert-title{font-family:var(--mono);font-size:.72rem;font-weight:600;color:var(--text)}
+  .mob-alert-body{font-size:.68rem;color:var(--muted);margin-top:.2rem;line-height:1.4}
+  .mob-alert-time{font-family:var(--mono);font-size:.55rem;color:var(--muted);margin-top:.25rem;opacity:.6}
+  .mob-lici-dates{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border-radius:8px;overflow:hidden;margin-top:.3rem}
+  .mob-lici-cell{background:var(--panel);padding:.6rem;text-align:center}
+  .mob-lici-label{font-family:var(--mono);font-size:.5rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  .mob-lici-val{font-family:var(--mono);font-size:1.3rem;font-weight:700;color:var(--amber)}
+}
 </style>
 </head>
 <body>
@@ -286,7 +342,18 @@ function fmtTS(d){return String(d.getHours()).padStart(2,'0')+':'+String(d.getMi
 var progState={};
 function initProg(key,intervalSec){progState[key]={lastRefresh:Date.now(),interval:intervalSec*1000}}
 function touchProg(key){if(progState[key])progState[key].lastRefresh=Date.now();var tsEl=$(key.replace('prog-','ts-'));if(tsEl)tsEl.textContent=fmtTS(new Date())}
-function updateProgs(){var now=Date.now();Object.keys(progState).forEach(function(key){var st=progState[key];var elapsed=now-st.lastRefresh;var pct=Math.max(0,100-elapsed/st.interval*100);var remaining=Math.max(0,Math.round((st.interval-elapsed)/1000));var pbEl=$(key);var cdEl=$(key.replace('pb-','cd-'));if(pbEl)pbEl.style.width=pct+'%';if(cdEl)cdEl.textContent=remaining>0?fmtHMS(remaining):'--:--';})}
+function updateProgs(){
+  var now=Date.now();
+  Object.keys(progState).forEach(function(key){
+    var st=progState[key];
+    var elapsed=now-st.lastRefresh;
+    var pct=Math.max(0,100-elapsed/st.interval*100);
+    var remaining=Math.max(0,Math.round((st.interval-elapsed)/1000));
+    var pbEl=$(key);var cdEl=$(key.replace('pb-','cd-'));
+    if(pbEl)pbEl.style.width=pct+'%';
+    if(cdEl)cdEl.textContent=fmtHMS(remaining);
+  });
+}
 
 const CSV_BONDS='https://docs.google.com/spreadsheets/d/e/2PACX-1vTDDCPaFWrl0LmClbajiHvYkeqbpczciXXnQV8VhWJ2QfMEhHo0tQGHpQFdN1UtFmGO--i2__OnSF8I/pub?gid=0&single=true&output=csv';
 const CSV_FLUJOS='https://docs.google.com/spreadsheets/d/e/2PACX-1vSUp-XJ7rx8hw0j_Rqy7RHrqCBwqwUxgH_BZQ6RmSY2sfXNHd7Yvb2vlLCYabemODWaCLdBoQ2kxCTW/pub?gid=0&single=true&output=csv';
@@ -387,9 +454,15 @@ function renderFijaCer(id,data){var el=$(id);if(!el)return;el.innerHTML='<thead>
 function renderHardUsd(id,data){var el=$(id);if(!el)return;el.innerHTML='<thead><tr><th>Ticker</th><th>Precio</th><th>Var%</th><th>TIR%</th><th>MD</th></tr></thead><tbody>'+data.map(function(b){var pct=b.pct||0;var up=pct>0,dn=pct<0;var arrow=up?'▲':dn?'▼':'';var vc=up?'td-up':dn?'td-dn':'';return'<tr><td class="td-tk">'+b.t+'</td><td class="td-nr '+vc+'">'+(+b.p).toFixed(2)+'</td><td class="td-var '+vc+'">'+arrow+Math.abs(pct).toFixed(1)+'</td><td class="td-nr">'+(b.tir!==null?(+b.tir).toFixed(1):'—')+'</td><td class="td-nr td-mt">'+(b.md!==null?(+b.md).toFixed(1):'—')+'</td></tr>'}).join('')+'</tbody>'}
 function updateBonds(){buildBondData();renderFijaCer('tbl-tasafija',bonds.tasafija);renderFijaCer('tbl-cer',bonds.cer);renderHardUsd('tbl-hardusd',bonds.hardusd)}
 
-function renderPF(){var sorted=[].concat(PF_BANKS).sort(function(a,b){return b.tna-a.tna});var uniq=[];sorted.forEach(function(x){if(uniq.indexOf(x.tna)<0)uniq.push(x.tna)});uniq.sort(function(a,b){return b-a});var denseRank=function(tna){return uniq.indexOf(tna)+1};var mer=null;for(var i=0;i<sorted.length;i++){if(sorted[i].mer){mer=sorted[i];break}}var merPos=mer?denseRank(mer.tna):null;var rows='';for(var j=0;j<sorted.length;j++){var b=sorted[j];var pos=denseRank(b.tna);rows+='<tr class="'+(b.mer?'row-mer':'')+'"><td class="pf-pos '+(pos===1?'p1':'')+'">#'+pos+'</td><td class="'+(b.mer?'pf-bank':'')+'">'+ b.name+'</td><td class="pf-tna '+(pos===1?'best':'')+'">'+fmtP(b.tna)+'</td><td style="font-family:var(--mono);font-size:.75rem;text-align:right;color:var(--muted)">'+(b.mer?'<span class="rank-tag">'+merPos+'/ '+uniq.length+'</span>':'')+'</td></tr>'}$('tbl-pf').innerHTML='<thead><tr><th>#</th><th>Banco</th><th>TNA</th><th>Ranking</th></tr></thead><tbody>'+rows+'</tbody>'}
-
-function renderDB(){var sorted=[].concat(DB_BANKS).sort(function(a,b){return a.venta-b.venta});var rows='';for(var i=0;i<sorted.length;i++){var b=sorted[i];rows+='<tr class="'+(i===0?'row-db-best':b.mer?'row-db-mer':'')+'"><td class="db-pos '+(i===0?'p1':'')+'">'+( i+1)+'</td><td class="db-bank '+(b.mer?'mer':'')+'">'+ b.name+'</td><td class="db-venta '+(i===0?'best':'')+'">$'+fmt2(b.venta)+'</td></tr>'}$('tbl-db').innerHTML='<thead><tr><th>#</th><th>Banco</th><th>Venta</th></tr></thead><tbody>'+rows+'</tbody>'}
+function renderPF(){
+  var sorted=[].concat(PF_BANKS).sort(function(a,b){return b.tna-a.tna});
+  var uniq=[...new Set(sorted.map(function(x){return x.tna}))].sort(function(a,b){return b-a});
+  var denseRank=function(tna){return uniq.indexOf(tna)+1};
+  var mer=sorted.find(function(x){return x.mer});
+  var merPos=mer?denseRank(mer.tna):null;
+  $('tbl-pf').innerHTML='<thead><tr><th>#</th><th>Banco</th><th>TNA</th><th>Ranking</th></tr></thead><tbody>'+sorted.map(function(b){var pos=denseRank(b.tna);return'<tr class="'+(b.mer?'row-mer':'')+'"><td class="pf-pos '+(pos===1?'p1:'':'')+'">#'+pos+'</td><td class="'+(b.mer?'pf-bank':'')+'">'+b.name+'</td><td class="pf-tna '+(pos===1?'best':'')+'">'+fmtP(b.tna)+'</td><td style="font-family:var(--mono);font-size:.75rem;text-align:right;color:var(--muted)">'+(b.mer?'<span class="rank-tag">▲ '+merPos+'° / '+uniq.length+'</span>':'')+'</td></tr>'}).join('')+'</tbody>';
+}
+function renderDB(){var sorted=[].concat(DB_BANKS).sort(function(a,b){return a.venta-b.venta});$('tbl-db').innerHTML='<thead><tr><th>#</th><th>Banco</th><th>Venta</th></tr></thead><tbody>'+sorted.map(function(b,i){return'<tr class="'+(i===0?'row-db-best':b.mer?'row-db-mer':'')+'"><td class="db-pos '+(i===0?'p1':'')+'">'+( i+1)+'</td><td class="db-bank '+(b.mer?'mer':'')+'">'+b.name+'</td><td class="db-venta '+(i===0?'best':'')+'">$'+fmt2(b.venta)+'</td></tr>'}).join('')+'</tbody>'}
 function renderTicker(){$('ticker-scroll').innerHTML=[].concat(stocks,stocks).map(function(s){var up=s.p>0,dn=s.p<0;var arrow=up?'▲':dn?'▼':'—';var cls=up?'t-up':dn?'t-dn':'t-flat';return'<span class="ticker-item"><span class="t-sym">'+s.s+'</span><span class="t-px '+cls+'">'+fmt2(s.cur)+'</span><span class="t-pct '+cls+'">'+arrow+Math.abs(s.p).toFixed(2)+'%</span></span>'}).join('')}
 function updateClock(){var now=new Date();$('clock').textContent=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(now.getSeconds()).padStart(2,'0')}
 
@@ -455,6 +528,7 @@ async function init(){
   drawChart('chart-tamar',tamarHist,'#f0a03d');
   // touch bond progs after first load
   touchProg('pb-tf');touchProg('pb-cer');touchProg('pb-hd');
+  if(IS_MOB) mobUpdateRates();
 }
 init();
 
@@ -469,6 +543,175 @@ setInterval(async function(){var h=new Date().getHours();if(h>=9&&h<18){await fe
 setInterval(async function(){await fetchLici()},300000);
 
 setInterval(function(){updateClock();updateProgs()},1000);
+
+// ── MOBILE ──
+var IS_MOB = window.innerWidth <= 768;
+
+function mobNav(tab) {
+  var screens = ['home','tasas','lici','alertas'];
+  screens.forEach(function(s) {
+    var sc = document.getElementById('mob-'+s);
+    var nav = document.getElementById('mob-nav-'+s);
+    if(sc) sc.classList.toggle('active', s===tab);
+    if(nav) nav.classList.toggle('active', s===tab);
+  });
+  var titles = {home:'MERCADOS BM', tasas:'TASAS BCRA', lici:'LICITACIONES', alertas:'ALERTAS'};
+  var el = document.getElementById('mob-page-title');
+  if(el) el.textContent = titles[tab]||'';
+}
+
+function mobDrawSpark(id, data, color) {
+  var svg = document.getElementById(id);
+  if(!svg||!data||data.length<2) return;
+  var W=120, H=20;
+  var clean = data.filter(function(v){return !isNaN(v)&&isFinite(v)});
+  if(clean.length<2) return;
+  var mn=Math.min.apply(null,clean)*0.999, mx=Math.max.apply(null,clean)*1.001;
+  var x=function(i){return i/(clean.length-1)*W};
+  var y=function(v){return H-(v-mn)/(mx-mn)*H};
+  var pts = clean.map(function(v,i){return x(i)+','+y(v)}).join(' ');
+  svg.innerHTML = '<polyline points="'+pts+'" fill="none" stroke="'+color+'" stroke-width="1.5" stroke-linejoin="round"/>'
+    +'<circle cx="'+x(clean.length-1)+'" cy="'+y(clean[clean.length-1])+'" r="2" fill="'+color+'"/>';
+}
+
+function mobRenderPF() {
+  var el = document.getElementById('mob-pf-list');
+  if(!el||!PF_BANKS.length) return;
+  var sorted = [].concat(PF_BANKS).sort(function(a,b){return b.tna-a.tna});
+  var uniq = [];
+  sorted.forEach(function(x){if(uniq.indexOf(x.tna)<0)uniq.push(x.tna)});
+  uniq.sort(function(a,b){return b-a});
+  var rows = '';
+  for(var i=0;i<sorted.length;i++){
+    var b=sorted[i], pos=uniq.indexOf(b.tna)+1;
+    rows += '<div class="mob-row'+(b.mer?' style="background:rgba(0,200,150,.04)"':'')+'"><span class="mob-row-pos">#'+pos+'</span><span class="mob-row-name'+(b.mer?' mer':'')+'">'+b.name+'</span><span class="mob-row-val'+(pos===1?' green':'')+'">'+fmtP(b.tna)+'</span></div>';
+  }
+  el.innerHTML = rows;
+}
+
+function mobRenderDB() {
+  var el = document.getElementById('mob-db-list');
+  if(!el||!DB_BANKS.length) return;
+  var sorted = [].concat(DB_BANKS).sort(function(a,b){return a.venta-b.venta});
+  var rows = '';
+  for(var i=0;i<sorted.length;i++){
+    var b=sorted[i];
+    rows += '<div class="mob-row'+(i===0?' style="background:rgba(0,200,150,.04)"':b.mer?' style="background:rgba(61,142,240,.04)"':'')+'"><span class="mob-row-name'+(b.mer?' mer':'')+'">'+b.name+'</span><span class="mob-row-val'+(i===0?' green':'')+'">$'+fmt2(b.venta)+'</span></div>';
+  }
+  el.innerHTML = rows;
+}
+
+function mobRenderFCI(rows) {
+  var el = document.getElementById('mob-fci-list');
+  if(!el||!rows.length) return;
+  var html = '';
+  rows.forEach(function(r){
+    html += '<div class="mob-row"><span class="mob-row-name" style="font-size:.75rem">'+r.fondo+'</span><span class="mob-row-val green">'+(r.tna!==null?r.tna.toFixed(2)+'%':'—')+'</span><span class="mob-row-sub">'+fmtFechaCorta(r.fecha)+'</span></div>';
+  });
+  el.innerHTML = html;
+}
+
+function mobRenderBonds(listId, data, isHD) {
+  var el = document.getElementById(listId);
+  if(!el||!data.length) return;
+  var html = '';
+  data.forEach(function(b){
+    var pct=b.pct||0, up=pct>0, dn=pct<0;
+    var chgClass=up?'chg-up':dn?'chg-down':'';
+    var metric = isHD ? (b.tir!==null?b.tir.toFixed(1)+'%TIR':'—') : (b.tna!==null?b.tna.toFixed(1)+'%TNA':'—');
+    html += '<div class="mob-row"><span class="mob-row-name">'+b.t+'</span><span class="mob-row-val" style="font-size:.78rem">'+(+b.p).toFixed(2)+'</span><span class="mob-row-chg '+chgClass+'">'+(up?'▲':dn?'▼':'')+Math.abs(pct).toFixed(1)+'%</span><span class="mob-row-sub">'+metric+'</span></div>';
+  });
+  el.innerHTML = html;
+}
+
+function mobRenderLici(lici) {
+  if(!lici) return;
+  var recEl=document.getElementById('mob-lici-rec');
+  var liqEl=document.getElementById('mob-lici-liq');
+  var badgeEl=document.getElementById('mob-lici-badge');
+  var instrEl=document.getElementById('mob-lici-instr');
+  var cdEl=document.getElementById('mob-lici-cd');
+  var linkEl=document.getElementById('mob-lici-link');
+  if(recEl) recEl.textContent=lici.recepcion||'—';
+  if(liqEl) liqEl.textContent=lici.liquidacion||'—';
+  if(badgeEl){
+    var cfg={activa:{txt:'ACTIVA',c:'var(--accent)'},proxima:{txt:'PROXIMA',c:'var(--amber)'},cerrada:{txt:'CERRADA',c:'var(--muted)'}};
+    var s=cfg[lici.estado]||cfg.cerrada;
+    badgeEl.innerHTML='<span style="font-family:var(--mono);font-size:.55rem;color:'+s.c+';font-weight:600">'+s.txt+'</span>';
+  }
+  if(instrEl&&lici.instrumentos){
+    instrEl.innerHTML=lici.instrumentos.map(function(inst){
+      return '<span class="lici-type '+inst.type+'" style="font-size:.6rem;padding:.1rem .35rem;border-radius:3px">'+inst.label+'</span>';
+    }).join('');
+  }
+  if(cdEl&&lici.recepcionISO){
+    var rc=new Date(lici.recepcionISO);rc.setHours(15,0,0,0);
+    var now=new Date(),diff=rc-now;
+    if(diff>0){var h=Math.floor(diff/3600000),m=Math.floor((diff%3600000)/60000);cdEl.textContent='Cierra en '+h+'h '+m+'m';cdEl.style.color='var(--accent)'}
+    else{var ago=Math.abs(diff),d=Math.floor(ago/86400000),hh=Math.floor((ago%86400000)/3600000);cdEl.textContent='Cerro hace '+(d>0?d+'d ':'')+hh+'h';cdEl.style.color='var(--muted)'}
+  }
+  if(linkEl&&lici.url){linkEl.href=lici.url;linkEl.style.display='block'}else if(linkEl){linkEl.style.display='none'}
+}
+
+function mobUpdateRates() {
+  if(!IS_MOB) return;
+  var mv=document.getElementById('mob-mep-val');
+  if(mv) mv.textContent='$'+fmt2(mepCur);
+  var mc=document.getElementById('mob-mep-chg');
+  if(mc&&mepPrevClose){var p=(((mepCur-mepPrevClose)/mepPrevClose)*100).toFixed(2);var up=mepCur>mepPrevClose;mc.innerHTML='<span class="'+(up?'chg-up':'chg-down')+'">'+(up?'▲':'▼')+' '+Math.abs(p)+'%</span>'}
+  var cv=document.getElementById('mob-ccl-val');
+  if(cv) cv.textContent='$'+fmt2(cclCur);
+  var cc=document.getElementById('mob-ccl-chg');
+  if(cc&&cclPrevClose){var p2=(((cclCur-cclPrevClose)/cclPrevClose)*100).toFixed(2);var up2=cclCur>cclPrevClose;cc.innerHTML='<span class="'+(up2?'chg-up':'chg-down')+'">'+(up2?'▲':'▼')+' '+Math.abs(p2)+'%</span>'}
+  var tv=document.getElementById('mob-tamar-val');
+  if(tv) tv.textContent=fmtP(tamarCur);
+  var td=document.getElementById('mob-tamar-date');
+  if(td) td.textContent=tamarDate;
+  var tc=document.getElementById('mob-tamar-chg');
+  if(tc){var bps=Math.round((tamarCur-tamarPrev)*100);var sign=bps>0?'+':'';var upT=bps>0;tc.innerHTML='<span class="'+(upT?'chg-up':'chg-down')+'">'+(upT?'▲':'▼')+' '+sign+bps+'bps</span>'}
+  mobDrawSpark('mob-chart-mep',mepHist,'#00c896');
+  mobDrawSpark('mob-chart-ccl',cclHist,'#3d8ef0');
+  mobDrawSpark('mob-chart-tamar',tamarHist,'#f0a03d');
+  mobRenderPF();
+  mobRenderDB();
+  mobRenderBonds('mob-tf-list',bonds.tasafija,false);
+  mobRenderBonds('mob-cer-list',bonds.cer,false);
+  mobRenderBonds('mob-hd-list',bonds.hardusd,true);
+  // BCRA tasa display — use TAMAR as proxy for now, others show dash
+  var bcraEl=document.getElementById('mob-bcra-tamar');
+  if(bcraEl) bcraEl.textContent=fmtP(tamarCur);
+  var bcraCEl=document.getElementById('mob-bcra-tamar-chg');
+  if(bcraCEl){var bps2=Math.round((tamarCur-tamarPrev)*100);var s2=bps2>0?'+':'';bcraCEl.innerHTML='<span class="'+(bps2>0?'chg-up':'chg-down')+'">'+s2+bps2+'bps</span>'}
+}
+
+function mobUpdateClock() {
+  var el=document.getElementById('mob-clock');
+  if(el){var now=new Date();el.textContent=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')}
+}
+
+// Override renderFCI to also update mobile
+var _origRenderFCI = renderFCI;
+renderFCI = function(rows) {
+  _origRenderFCI(rows);
+  if(IS_MOB) mobRenderFCI(rows);
+};
+
+// Override fetchLici to also update mobile
+var _origFetchLici = fetchLici;
+fetchLici = async function() {
+  await _origFetchLici();
+  if(IS_MOB){
+    try{
+      var r=await fetch(API_LICI);var data=await r.json();
+      if(data.data) mobRenderLici(data.data);
+    }catch(e){}
+  }
+};
+
+if(IS_MOB){
+  setInterval(mobUpdateClock, 1000);
+  setInterval(mobUpdateRates, 10000);
+}
 </script>
 
 <div class="theme-btn" id="theme-btn" title="Tema">&#9881;</div>
@@ -508,5 +751,113 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.register('/api/sw').then(function(){console.log('SW registered')});
 }
 </script>
+
+<!-- MOBILE LAYOUT -->
+<div class="mob" id="mob-root">
+  <div class="mob-status">
+    <span class="mob-time" id="mob-clock">09:41</span>
+    <span style="font-family:var(--mono);font-size:.6rem;color:var(--muted)">BM</span>
+  </div>
+  <div class="mob-topbar">
+    <div><div class="mob-title" id="mob-page-title">MERCADOS BM</div><div class="mob-sub" id="mob-page-sub">Horario hábil</div></div>
+    <span class="mob-alert-badge" id="mob-alert-count" style="display:none">0</span>
+  </div>
+
+  <!-- HOME -->
+  <div class="mob-screen active" id="mob-home">
+    <div class="mob-content">
+      <div class="mob-sec">Tipo de cambio</div>
+      <div class="mob-hero-row">
+        <div class="mob-card">
+          <div class="mob-label">Dolar MEP</div>
+          <div class="mob-val green" id="mob-mep-val">—</div>
+          <div class="mob-chg chg-up" id="mob-mep-chg"></div>
+          <svg class="mob-spark" id="mob-chart-mep" viewBox="0 0 120 20" preserveAspectRatio="none"></svg>
+        </div>
+        <div class="mob-card">
+          <div class="mob-label">Dolar CCL</div>
+          <div class="mob-val blue" id="mob-ccl-val">—</div>
+          <div class="mob-chg" id="mob-ccl-chg"></div>
+          <svg class="mob-spark" id="mob-chart-ccl" viewBox="0 0 120 20" preserveAspectRatio="none"></svg>
+        </div>
+      </div>
+      <div class="mob-tamar">
+        <div class="mob-tamar-left">
+          <div class="mob-label">TAMAR</div>
+          <div class="mob-val amber" id="mob-tamar-val">—</div>
+          <div class="mob-chg" id="mob-tamar-chg"></div>
+          <div style="font-family:var(--mono);font-size:.55rem;color:var(--muted);margin-top:.2rem" id="mob-tamar-date"></div>
+        </div>
+        <svg style="width:90px;height:36px;flex-shrink:0" id="mob-chart-tamar" viewBox="0 0 90 36" preserveAspectRatio="none"></svg>
+      </div>
+      <div class="mob-sec">Plazo Fijo · no clientes</div>
+      <div class="mob-list" id="mob-pf-list"></div>
+      <div class="mob-sec">Dolar Bancos · venta</div>
+      <div class="mob-list" id="mob-db-list"></div>
+    </div>
+  </div>
+
+  <!-- TASAS -->
+  <div class="mob-screen" id="mob-tasas">
+    <div class="mob-content">
+      <div class="mob-sec">Series BCRA</div>
+      <div class="mob-list" id="mob-bcra-list">
+        <div class="mob-row"><span class="mob-row-name">TAMAR</span><svg class="mob-spark-inline" viewBox="0 0 60 18" width="60" height="18"><polyline points="0,16 10,14 20,12 30,10 40,12 50,8 60,5" fill="none" stroke="#f0a03d" stroke-width="1.2"/></svg><span class="mob-row-val amber" id="mob-bcra-tamar">—</span><span class="mob-row-chg" id="mob-bcra-tamar-chg"></span></div>
+        <div class="mob-row"><span class="mob-row-name">BADLAR</span><svg class="mob-spark-inline" viewBox="0 0 60 18" width="60" height="18"><polyline points="0,14 10,13 20,11 30,10 40,11 50,8 60,7" fill="none" stroke="#00c896" stroke-width="1.2"/></svg><span class="mob-row-val" id="mob-bcra-badlar">—</span><span class="mob-row-chg" id="mob-bcra-badlar-chg"></span></div>
+        <div class="mob-row"><span class="mob-row-name">TM20</span><svg class="mob-spark-inline" viewBox="0 0 60 18" width="60" height="18"><polyline points="0,6 10,7 20,8 30,10 40,9 50,11 60,13" fill="none" stroke="#3d8ef0" stroke-width="1.2"/></svg><span class="mob-row-val" id="mob-bcra-tm20">—</span><span class="mob-row-chg" id="mob-bcra-tm20-chg"></span></div>
+        <div class="mob-row"><span class="mob-row-name">BAIBAR</span><svg class="mob-spark-inline" viewBox="0 0 60 18" width="60" height="18"><polyline points="0,16 10,14 20,12 30,10 40,9 50,8 60,6" fill="none" stroke="#00c896" stroke-width="1.2"/></svg><span class="mob-row-val" id="mob-bcra-baibar">—</span><span class="mob-row-chg" id="mob-bcra-baibar-chg"></span></div>
+        <div class="mob-row"><span class="mob-row-name">PF30</span><svg class="mob-spark-inline" viewBox="0 0 60 18" width="60" height="18"><polyline points="0,9 10,9 20,9 30,9 40,9 50,9 60,9" fill="none" stroke="#3d5070" stroke-width="1.2"/></svg><span class="mob-row-val" id="mob-bcra-pf30">—</span><span class="mob-row-chg" id="mob-bcra-pf30-chg"></span></div>
+        <div class="mob-row"><span class="mob-row-name">Adelantos</span><svg class="mob-spark-inline" viewBox="0 0 60 18" width="60" height="18"><polyline points="0,5 10,6 20,8 30,10 40,12 50,13 60,15" fill="none" stroke="#e05252" stroke-width="1.2"/></svg><span class="mob-row-val blue" id="mob-bcra-adelantos">—</span><span class="mob-row-chg" id="mob-bcra-adelantos-chg"></span></div>
+        <div class="mob-row"><span class="mob-row-name">Personales</span><svg class="mob-spark-inline" viewBox="0 0 60 18" width="60" height="18"><polyline points="0,16 10,14 20,11 30,8 40,6 50,4 60,2" fill="none" stroke="#00c896" stroke-width="1.2"/></svg><span class="mob-row-val blue" id="mob-bcra-personales">—</span><span class="mob-row-chg" id="mob-bcra-personales-chg"></span></div>
+      </div>
+      <div class="mob-sec">FCI Mercado Dinero · top 5</div>
+      <div class="mob-list" id="mob-fci-list"></div>
+    </div>
+  </div>
+
+  <!-- LICI -->
+  <div class="mob-screen" id="mob-lici">
+    <div class="mob-content">
+      <div class="mob-sec">Licitacion MECON</div>
+      <div class="mob-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem">
+          <span style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--text)">MECON</span>
+          <span id="mob-lici-badge"></span>
+        </div>
+        <div class="mob-lici-dates">
+          <div class="mob-lici-cell"><div class="mob-lici-label">Recepcion</div><div class="mob-lici-val" id="mob-lici-rec">—</div></div>
+          <div class="mob-lici-cell"><div class="mob-lici-label">Liquidacion</div><div class="mob-lici-val" style="color:var(--muted)" id="mob-lici-liq">—</div></div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.6rem" id="mob-lici-instr"></div>
+        <div style="font-family:var(--mono);font-size:.65rem;color:var(--muted);margin-top:.5rem" id="mob-lici-cd"></div>
+        <a style="font-family:var(--mono);font-size:.62rem;color:var(--blue);display:block;margin-top:.3rem;text-decoration:none" id="mob-lici-link" href="#" target="_blank">ver noticia</a>
+      </div>
+      <div class="mob-sec">Bonos Tasa Fija</div>
+      <div class="mob-list" id="mob-tf-list"></div>
+      <div class="mob-sec">CER</div>
+      <div class="mob-list" id="mob-cer-list"></div>
+      <div class="mob-sec">Hard Dolar</div>
+      <div class="mob-list" id="mob-hd-list"></div>
+    </div>
+  </div>
+
+  <!-- ALERTAS -->
+  <div class="mob-screen" id="mob-alertas">
+    <div class="mob-content">
+      <div class="mob-sec">Alertas recientes</div>
+      <div id="mob-alerts-list" style="display:flex;flex-direction:column;gap:.5rem">
+        <div style="font-family:var(--mono);font-size:.7rem;color:var(--muted);text-align:center;padding:1rem">Sin alertas recientes</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mob-nav">
+    <div class="mob-nav-item active" id="mob-nav-home" onclick="mobNav('home')"><span class="mob-nav-icon">📊</span><span class="mob-nav-label">Home</span></div>
+    <div class="mob-nav-item" id="mob-nav-tasas" onclick="mobNav('tasas')"><span class="mob-nav-icon">📈</span><span class="mob-nav-label">Tasas</span></div>
+    <div class="mob-nav-item" id="mob-nav-lici" onclick="mobNav('lici')"><span class="mob-nav-icon">📋</span><span class="mob-nav-label">Lici</span></div>
+    <div class="mob-nav-item" id="mob-nav-alertas" onclick="mobNav('alertas')"><span class="mob-nav-icon">🔔</span><span class="mob-nav-label">Alertas</span></div>
+  </div>
+</div>
+
 </body>
 </html>
