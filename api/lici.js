@@ -130,9 +130,6 @@ export default async function handler(req, res) {
 
     // Si encontramos una futura o activa, usar esa. Si es cerrada, seguir buscando una más nueva.
     if (estado !== 'cerrada') break;
-    // Guardar la cerrada más reciente pero seguir buscando
-    // (el bucle va de más reciente a más viejo, así que la primera cerrada que encontremos es la más reciente)
-    break;
   }
 
   if (!resultado) {
