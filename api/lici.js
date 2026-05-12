@@ -130,6 +130,8 @@ export default async function handler(req, res) {
 
     // Si encontramos una futura o activa, usar esa. Si es cerrada, seguir buscando una más nueva.
     if (estado !== 'cerrada') break;
+    if (!resultado) resultado = { estado, recepcion: formatFecha(recepFecha), liquidacion: liqFecha ? formatFecha(liqFecha) : null, recepcionISO: recepFecha.toISOString(), liqISO: liqFecha ? liqFecha.toISOString() : null, instrumentos, url: `${BASE_URL}${slug}`, ts: new Date().toISOString() };
+    break;
   }
 
   if (!resultado) {
