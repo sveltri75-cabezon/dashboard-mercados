@@ -88,8 +88,7 @@ export default async function handler(req, res) {
 
     // Buscar fecha de publicación de la noticia
     const pubMatch = html.match(/(\d{1,2})\s+de\s+([a-záéíóúü]+)\s+de\s+(\d{4})/i);
-    const pubFecha = pubMatch ? parseFechaTexto(pubMatch[0]) : null;
-    if (!pubFecha) continue;
+    const pubFecha = pubMatch ? parseFechaTexto(pubMatch[0]) : new Date();
 
     // Solo considerar noticias de los últimos 90 días
     const diffDias = (today - pubFecha) / 86400000;
