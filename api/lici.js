@@ -1,6 +1,6 @@
 // api/lici.js
 // Busca la última licitación publicada en argentina.gob.ar/noticias/
-// Parsea fecha de recepción, liquidación e instrumentos
+// Parsea fecha de recepción, liquidación e instrumentos 
 
 const BASE_URL = 'https://www.argentina.gob.ar';
 const SEARCH_URL = `${BASE_URL}/noticias/llamado-licitacion-de-instrumentos-del-tesoro-nacional-denominados-en-pesos-y-en-dolares`;
